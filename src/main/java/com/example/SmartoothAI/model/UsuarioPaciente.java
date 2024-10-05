@@ -1,11 +1,15 @@
 package com.example.SmartoothAI.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tb_usuario_paciente")
 public class UsuarioPaciente {
 
@@ -43,6 +47,7 @@ public class UsuarioPaciente {
 
     @Column(name = "descontos")
     private Double descontos;
+
 }
 
 

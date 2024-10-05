@@ -31,7 +31,7 @@ public class Atendimento {
     private Double custo;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_paciente_id", referencedColumnName = "usuario_paciente_id")
+    @JoinColumn(name = "paciente_id", referencedColumnName = "paciente_id")
     private UsuarioPaciente usuarioPaciente;
 
     @ManyToOne
