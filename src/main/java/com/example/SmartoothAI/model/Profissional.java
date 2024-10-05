@@ -13,14 +13,14 @@ public class Profissional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profissional_id")
     private Long profissionalId;
-
     private String nome;
-    private String sobrenome;
-    private String email;
+    private String especialidade;
+    private String experiencia;
     private String contato;
-    private String registroConselho;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "data_registro")
     private Date dataRegistro;
+
 }
+

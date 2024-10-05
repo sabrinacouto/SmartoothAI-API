@@ -15,10 +15,12 @@ public class RecomendacaoTrat {
     private Long recomendacaoId;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "data_rec")
     private Date dataRec;
 
     @ManyToOne
-    @JoinColumn(name = "plano_plano_id")
+    @JoinColumn(name = "plano_plano_id", nullable = false)
     private Plano plano;
+
 }
 

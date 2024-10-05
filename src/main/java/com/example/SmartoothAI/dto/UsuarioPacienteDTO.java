@@ -1,48 +1,25 @@
-package com.example.SmartoothAI.model;
+package com.example.SmartoothAI.dto;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Date;
 
 @Data
-@Entity
-@Table(name = "tb_usuario_paciente")
-public class UsuarioPaciente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "paciente_id")
+public class UsuarioPacienteDTO {
     private Long usuarioPacienteId;
-
     private String nome;
     private String sobrenome;
     private String email;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "data_nasc")
     private Date dataNasc;
-
     private String genero;
     private String cep;
     private String logradouro;
-
-    @Column(name = "numero") // é um CHAR(8 CHAR) no banco
     private String numero;
-
     private String complemento;
     private String bairro;
     private String cidade;
-
-    @Column(name = "uf") // é um CHAR(2 CHAR) no banco
     private String uf;
-
     private String contato;
-
-    @Column(name = "pontos")
     private Double pontos;
-
-    @Column(name = "descontos")
     private Double descontos;
 }
-
 

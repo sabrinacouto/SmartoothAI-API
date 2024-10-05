@@ -23,10 +23,11 @@ public class AgendaConsulta {
     private Date horaConsulta;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_paciente_id")
+    @JoinColumn(name = "usuario_paciente_id", nullable = false)
     private UsuarioPaciente usuarioPaciente;
 
     @ManyToOne
-    @JoinColumn(name = "profissional_id")
+    @JoinColumn(name = "profissional_id", nullable = false)
     private Profissional profissional;
 }
+
