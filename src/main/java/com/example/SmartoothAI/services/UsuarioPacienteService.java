@@ -7,6 +7,7 @@ import com.example.SmartoothAI.model.UsuarioPaciente;
 import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,6 @@ public class UsuarioPacienteService {
 
     private final UsuarioPacienteRepository usuarioPacienteRepository;
 
-
     public List<UsuarioPaciente> getAllUsuarios() {
         return usuarioPacienteRepository.findAll();
     }
@@ -27,9 +27,8 @@ public class UsuarioPacienteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
     }
 
-
     @Transactional
-    public UsuarioPaciente createUsuario(UsuarioPacienteDTO usuarioPacienteDTO) {
+    public ResponseEntity<String> createUsuario(UsuarioPacienteDTO usuarioPacienteDTO) {
         if (usuarioPacienteRepository.findByEmail(usuarioPacienteDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("Já existe um usuário com este e-mail.");
         }
@@ -51,11 +50,12 @@ public class UsuarioPacienteService {
         usuarioPaciente.setPontos(usuarioPacienteDTO.getPontos());
         usuarioPaciente.setDescontos(usuarioPacienteDTO.getDescontos());
 
-        return usuarioPacienteRepository.save(usuarioPaciente);
+        usuarioPacienteRepository.save(usuarioPaciente);
+        return ResponseEntity.status(201).body("Usuário criado com sucesso.");
     }
 
     @Transactional
-    public UsuarioPaciente updateUsuario(Long id, UsuarioPacienteDTO usuarioPacienteDTO) {
+    public ResponseEntity<String> updateUsuario(Long id, UsuarioPacienteDTO usuarioPacienteDTO) {
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
@@ -75,16 +75,17 @@ public class UsuarioPacienteService {
         usuarioPaciente.setPontos(usuarioPacienteDTO.getPontos());
         usuarioPaciente.setDescontos(usuarioPacienteDTO.getDescontos());
 
-        return usuarioPacienteRepository.save(usuarioPaciente);
+        usuarioPacienteRepository.save(usuarioPaciente);
+        return ResponseEntity.ok("Usuário atualizado com sucesso.");
     }
 
-
     @Transactional
-    public void deleteUsuario(Long id) {
+    public ResponseEntity<String> deleteUsuario(Long id) {
         usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
         usuarioPacienteRepository.deleteById(id);
+        return ResponseEntity.ok("Usuário deletado com sucesso.");
     }
 }
 

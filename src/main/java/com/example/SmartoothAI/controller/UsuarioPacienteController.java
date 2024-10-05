@@ -1,8 +1,6 @@
 package com.example.SmartoothAI.controller;
 
 import com.example.SmartoothAI.dto.UsuarioPacienteDTO;
-import com.example.SmartoothAI.exceptions.EmailAlreadyExistsException;
-import com.example.SmartoothAI.exceptions.ResourceNotFoundException;
 import com.example.SmartoothAI.model.UsuarioPaciente;
 import com.example.SmartoothAI.services.UsuarioPacienteService;
 import org.springframework.http.HttpStatus;
@@ -10,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -34,24 +33,23 @@ public class UsuarioPacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioPaciente> createUsuario(@RequestBody UsuarioPacienteDTO usuarioPacienteDTO) {
-        UsuarioPaciente novoUsuario = usuarioPacienteService.createUsuario(usuarioPacienteDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
+    public ResponseEntity<String> createUsuario(@Valid @RequestBody UsuarioPacienteDTO usuarioPacienteDTO) {
+        return usuarioPacienteService.createUsuario(usuarioPacienteDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioPaciente> updateUsuario(@PathVariable Long id,
-                                                         @RequestBody UsuarioPacienteDTO usuarioPacienteDTO) {
-        UsuarioPaciente usuarioAtualizado = usuarioPacienteService.updateUsuario(id, usuarioPacienteDTO);
-        return ResponseEntity.ok(usuarioAtualizado);
+    public ResponseEntity<String> updateUsuario(@PathVariable Long id,
+                                                @Valid @RequestBody UsuarioPacienteDTO usuarioPacienteDTO) {
+        return usuarioPacienteService.updateUsuario(id, usuarioPacienteDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
-        usuarioPacienteService.deleteUsuario(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteUsuario(@PathVariable Long id) {
+        return usuarioPacienteService.deleteUsuario(id);
     }
+
 }
+
 
 
 
