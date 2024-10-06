@@ -10,7 +10,7 @@ import java.util.List;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/profissionais")
+@RequestMapping("/profissional")
 public class ProfissionalController {
 
     private final ProfissionalService profissionalService;
