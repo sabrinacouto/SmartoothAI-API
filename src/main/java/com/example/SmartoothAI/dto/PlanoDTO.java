@@ -15,13 +15,19 @@ public class PlanoDTO {
     @NotBlank(message = "A descrição é obrigatória.")
     private String descricao;
 
-    @NotNull(message = "A data de início é obrigatória.")
-    private Date dataInicio;
+    @NotBlank(message = "O tipo do plano é obrigatório.")
+    private String tipoPlano;
 
-    @NotNull(message = "A data de fim é obrigatória.")
-    private Date dataFim;
+    @NotBlank(message = "A marca do plano é obrigatória.")
+    private String marcaPlano;
 
-    @Positive(message = "O valor deve ser positivo.")
-    private Double valor;
+    @NotBlank(message = "O tipo de pagamento é obrigatório.")
+    private String tipoPagamento;
+
+
+    @NotNull(message = "O ID do usuário paciente é obrigatório.")
+    private Long usuarioPacienteId;
 }
+
+
 

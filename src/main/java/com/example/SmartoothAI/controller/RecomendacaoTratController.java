@@ -31,9 +31,15 @@ public class RecomendacaoTratController {
         return ResponseEntity.ok(recomendacao);
     }
 
+
     @PostMapping
     public ResponseEntity<String> createRecomendacao(@Valid @RequestBody RecomendacaoTratDTO recomendacaoTratDTO) {
         return recomendacaoTratService.save(recomendacaoTratDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateRecomendacao(@PathVariable Long id, @Valid @RequestBody RecomendacaoTratDTO recomendacaoTratDTO) {
+        return recomendacaoTratService.update(id, recomendacaoTratDTO);
     }
 
     @DeleteMapping("/{id}")

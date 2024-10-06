@@ -43,6 +43,21 @@ public class RecomendacaoTratService {
     }
 
     @Transactional
+    public ResponseEntity<String> update(Long id, RecomendacaoTratDTO recomendacaoTratDTO) {
+        RecomendacaoTrat recomendacaoTrat = recomendacaoTratRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Recomendação não encontrada com o ID: " + id));
+
+        Plano plano = planoRepository.findById(recomendacaoTratDTO.getPlanoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Plano não encontrado com o ID: " + recomendacaoTratDTO.getPlanoId()));
+
+        recomendacaoTrat.setDataRec(recomendacaoTratDTO.getDataRec());
+        recomendacaoTrat.setPlano(plano);
+
+        recomendacaoTratRepository.save(recomendacaoTrat);
+        return ResponseEntity.ok("Recomendação atualizada com sucesso.");
+    }
+
+    @Transactional
     public ResponseEntity<String> delete(Long id) {
         recomendacaoTratRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recomendação não encontrada com o ID: " + id));

@@ -15,16 +15,20 @@ public class Plano {
     @Column(name = "plano_id")
     private Long planoId;
 
+    @Column(name = "tipo_plano")
+    private String tipoPlano;
+
+    @Column(name = "descricao", nullable = false)
     private String descricao;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "data_inicio")
-    private Date dataInicio;
+    @Column(name = "marca_plano")
+    private String marcaPlano;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "data_fim")
-    private Date dataFim;
+    @Column(name = "tipo_pagamento")
+    private String tipoPagamento;
 
-    private Double valor;
+    @ManyToOne
+    @JoinColumn(name = "usuario_paciente_paciente_id", nullable = false)
+    private UsuarioPaciente usuarioPaciente;
 }
 

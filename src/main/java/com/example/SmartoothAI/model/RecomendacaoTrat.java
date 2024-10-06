@@ -10,7 +10,8 @@ import java.util.Date;
 public class RecomendacaoTrat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recomendacao_seq")
+    @SequenceGenerator(name = "recomendacao_seq", sequenceName = "seq_recomendacao_id", allocationSize = 1)
     @Column(name = "recomendacao_id")
     private Long recomendacaoId;
 
