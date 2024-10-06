@@ -3,7 +3,6 @@ package com.example.SmartoothAI.controller;
 import com.example.SmartoothAI.dto.UsuarioPacienteDTO;
 import com.example.SmartoothAI.model.UsuarioPaciente;
 import com.example.SmartoothAI.services.UsuarioPacienteService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
