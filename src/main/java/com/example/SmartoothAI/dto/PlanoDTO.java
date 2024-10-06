@@ -1,20 +1,27 @@
 package com.example.SmartoothAI.dto;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PlanoDTO {
 
     private Long planoId;
-    private String descricao;
-    private Date dataInicio;
-    private Date dataFim;
-    private Double valor;
 
+    @NotBlank(message = "A descrição é obrigatória.")
+    private String descricao;
+
+    @NotNull(message = "A data de início é obrigatória.")
+    private Date dataInicio;
+
+    @NotNull(message = "A data de fim é obrigatória.")
+    private Date dataFim;
+
+    @Positive(message = "O valor deve ser positivo.")
+    private Double valor;
 }
+
