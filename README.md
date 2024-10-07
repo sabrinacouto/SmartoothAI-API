@@ -59,7 +59,7 @@ as requisições das rotas com a URL:
 ```endpoint
    http://localhost:8080/
 ```
-## Endpoints para a entidade RecomendacaoTrat
+## 📌 Endpoints para RecomendacaoTrat
 
 ### GET - Retorna todas as recomendações
 GET http://localhost:8080/recomendacoes
@@ -76,7 +76,7 @@ PUT http://localhost:8080/recomendacoes/{id}
 ### DELETE - Deleta uma recomendação existente
 DELETE http://localhost:8080/recomendacoes/{id}
 
-## Endpoints para a entidade Plano
+## 📌 Endpoints para a entidade Plano
 
 ### GET - Retorna todos os planos
 GET http://localhost:8080/planos
@@ -94,7 +94,7 @@ PUT http://localhost:8080/planos/{id}
 DELETE http://localhost:8080/planos/{id}
 
 
-## Endpoints para a entidade Profissional
+## 📌 Endpoints para Profissional
 
 ### GET - Retorna um profissional por ID
 GET http://localhost:8080/profissional/{id}
@@ -109,7 +109,7 @@ PUT http://localhost:8080/profissional/{id}
 DELETE http://localhost:8080/profissional/{id}
 
 
-## Endpoints para a rota UsuarioPaciente
+## 📌 Endpoints para UsuarioPaciente
 
 ### GET - Retorna um paciente por ID
 GET http://localhost:8080/usuarios/{id}
@@ -124,19 +124,17 @@ PUT http://localhost:8080/usuarios/{id}
 DELETE http://localhost:8080/usuarios/{id}
 
 
-## 💐 Dependências
-
-```json
-{
-  "dependencies": {
-    "spring-boot-starter-data-jpa": "3.3.4",
-    "spring-boot-starter-web": "3.3.4",
-    "oracle-database-driver": "19.3.0",
-    "lombok": "1.18.28"
-  },
-  "devDependencies": {
-    "spring-boot-devtools": "3.3.4"
-  }
+## 📍 Dependências
+```gradle
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 ```
 
