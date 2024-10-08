@@ -6,6 +6,10 @@ O Smartooth AI é um sistema desenvolvido em Java com o framework Spring Boot, f
 
 Neste repositório encontra-se a API responsável pelo gerenciamento de profissionais, pacientes, planos, e demais funcionalidades voltadas para a área odontológica.
 
+## Link do Vídeo sobre o Projeto
+
+https://www.youtube.com/watch?v=GiufPHMESgY
+
 ## 🪐 Developers 
 
 - [Sabrina Couto](https://github.com/sabrinacouto) - RM552728
