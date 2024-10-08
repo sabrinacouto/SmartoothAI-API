@@ -12,7 +12,7 @@ https://www.youtube.com/watch?v=GiufPHMESgY
 
 ## 🪐 Developers 
 
-- [Sabrina Couto](https://github.com/sabrinacouto) - RM552728 - Desenvolvimento das entidades e DTOs, criação de serviços e testes dos endpoints..
+- [Sabrina Couto](https://github.com/sabrinacouto) - RM552728 - Criação de serviços, controllers e testes dos endpoints.
 - [Juliana Mo.](https://github.com/julianamo93) - RM554113 - Criação de regras de negócio e modelagem do banco de dados.
 - [Kevin Nobre](https://github.com/KevinNobre) - RM552590 - Manipulação de banco de dados e criação de entidades.
 
