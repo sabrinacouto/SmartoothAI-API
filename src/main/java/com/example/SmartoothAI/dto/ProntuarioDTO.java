@@ -2,12 +2,16 @@ package com.example.SmartoothAI.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@Builder
 public class ProntuarioDTO {
+
+    private Long prontuarioId;
 
     @NotBlank(message = "A prescrição não pode estar vazia.")
     @Size(max = 255, message = "A prescrição deve ter no máximo 255 caracteres.")
@@ -18,4 +22,5 @@ public class ProntuarioDTO {
 
     private Date dataRegistro;
 }
+
 

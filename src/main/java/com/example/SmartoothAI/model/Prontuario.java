@@ -1,11 +1,13 @@
 package com.example.SmartoothAI.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import java.util.Date;
 
 @Data
 @Entity
+@Builder
 @Table(name = "tb_prontuario")
 public class Prontuario {
 
