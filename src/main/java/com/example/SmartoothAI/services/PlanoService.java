@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,36 +21,31 @@ public class PlanoService {
     private final PlanoRepository planoRepository;
     private final UsuarioPacienteRepository usuarioPacienteRepository;
 
-    public List<Plano> getAllPlanos() {
-        return planoRepository.findAll();
+    public List<PlanoDTO> getAllPlanos() {
+        List<Plano> planos = planoRepository.findAll();
+        return planos.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    public Plano getPlanoById(Long id) {
-        return planoRepository.findById(id)
+    public ResponseEntity<PlanoDTO> getPlanoById(Long id) {
+        Plano plano = planoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plano não encontrado com o ID: " + id));
+        return ResponseEntity.ok(convertToDTO(plano));
     }
 
     @Transactional
     public ResponseEntity<String> createPlano(PlanoDTO planoDTO) {
-
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(planoDTO.getUsuarioPacienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário Paciente não encontrado com o ID: " + planoDTO.getUsuarioPacienteId()));
 
-
-        Plano plano = new Plano();
-        plano.setDescricao(planoDTO.getDescricao());
-        plano.setTipoPagamento(planoDTO.getTipoPagamento());
-        plano.setTipoPlano(planoDTO.getTipoPlano());
-        plano.setMarcaPlano(planoDTO.getMarcaPlano());
-        plano.setUsuarioPaciente(usuarioPaciente);
-
+        Plano plano = convertToEntity(planoDTO, usuarioPaciente);
         planoRepository.save(plano);
         return ResponseEntity.status(201).body("Plano criado com sucesso.");
     }
 
     @Transactional
     public ResponseEntity<String> updatePlano(Long id, PlanoDTO planoDTO) {
-
         Plano plano = planoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plano não encontrado com o ID: " + id));
 
@@ -73,6 +69,28 @@ public class PlanoService {
 
         planoRepository.deleteById(id);
         return ResponseEntity.ok("Plano deletado com sucesso.");
+    }
+
+    // Métodos de conversão de DTO para entidade
+    private Plano convertToEntity(PlanoDTO dto, UsuarioPaciente usuarioPaciente) {
+        Plano entity = new Plano();
+        entity.setDescricao(dto.getDescricao());
+        entity.setTipoPagamento(dto.getTipoPagamento());
+        entity.setTipoPlano(dto.getTipoPlano());
+        entity.setMarcaPlano(dto.getMarcaPlano());
+        entity.setUsuarioPaciente(usuarioPaciente);
+        return entity;
+    }
+
+    private PlanoDTO convertToDTO(Plano entity) {
+        PlanoDTO dto = new PlanoDTO();
+        dto.setPlanoId(entity.getPlanoId());
+        dto.setDescricao(entity.getDescricao());
+        dto.setTipoPagamento(entity.getTipoPagamento());
+        dto.setTipoPlano(entity.getTipoPlano());
+        dto.setMarcaPlano(entity.getMarcaPlano());
+        dto.setUsuarioPacienteId(entity.getUsuarioPaciente().getUsuarioPacienteId());
+        return dto;
     }
 }
 
