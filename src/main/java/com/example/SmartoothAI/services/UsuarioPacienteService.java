@@ -5,12 +5,13 @@ import com.example.SmartoothAI.exceptions.EmailAlreadyExistsException;
 import com.example.SmartoothAI.exceptions.ResourceNotFoundException;
 import com.example.SmartoothAI.model.UsuarioPaciente;
 import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,20 +19,33 @@ public class UsuarioPacienteService {
 
     private final UsuarioPacienteRepository usuarioPacienteRepository;
 
-    public List<UsuarioPaciente> getAllUsuarios() {
-        return usuarioPacienteRepository.findAll();
-    }
-
-    public UsuarioPaciente getUsuarioById(Long id) {
-        return usuarioPacienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
+    private UsuarioPacienteDTO convertToDTO(UsuarioPaciente usuarioPaciente) {
+        UsuarioPacienteDTO dto = new UsuarioPacienteDTO();
+        dto.setUsuarioPacienteId(usuarioPaciente.getUsuarioPacienteId());
+        dto.setNome(usuarioPaciente.getNome());
+        dto.setSobrenome(usuarioPaciente.getSobrenome());
+        dto.setEmail(usuarioPaciente.getEmail());
+        dto.setDataNasc(usuarioPaciente.getDataNasc());
+        dto.setGenero(usuarioPaciente.getGenero());
+        dto.setCep(usuarioPaciente.getCep());
+        dto.setLogradouro(usuarioPaciente.getLogradouro());
+        dto.setNumero(usuarioPaciente.getNumero());
+        dto.setComplemento(usuarioPaciente.getComplemento());
+        dto.setBairro(usuarioPaciente.getBairro());
+        dto.setCidade(usuarioPaciente.getCidade());
+        dto.setUf(usuarioPaciente.getUf());
+        dto.setContato(usuarioPaciente.getContato());
+        dto.setDescontos(usuarioPaciente.getDescontos());
+        return dto;
     }
 
     @Transactional
-    public ResponseEntity<String> createUsuario(UsuarioPacienteDTO usuarioPacienteDTO) {
+    public ResponseEntity<UsuarioPacienteDTO> createUsuario(UsuarioPacienteDTO usuarioPacienteDTO) {
+
         if (usuarioPacienteRepository.findByEmail(usuarioPacienteDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("Já existe um usuário com este e-mail.");
         }
+
 
         UsuarioPaciente usuarioPaciente = new UsuarioPaciente();
         usuarioPaciente.setNome(usuarioPacienteDTO.getNome());
@@ -47,15 +61,17 @@ public class UsuarioPacienteService {
         usuarioPaciente.setCidade(usuarioPacienteDTO.getCidade());
         usuarioPaciente.setUf(usuarioPacienteDTO.getUf());
         usuarioPaciente.setContato(usuarioPacienteDTO.getContato());
-        usuarioPaciente.setPontos(usuarioPacienteDTO.getPontos());
         usuarioPaciente.setDescontos(usuarioPacienteDTO.getDescontos());
+        usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
 
         usuarioPacienteRepository.save(usuarioPaciente);
-        return ResponseEntity.status(201).body("Usuário criado com sucesso.");
+
+        UsuarioPacienteDTO dto = convertToDTO(usuarioPaciente);
+        return ResponseEntity.status(201).body(dto);
     }
 
     @Transactional
-    public ResponseEntity<String> updateUsuario(Long id, UsuarioPacienteDTO usuarioPacienteDTO) {
+    public ResponseEntity<UsuarioPacienteDTO> updateUsuario(Long id, UsuarioPacienteDTO usuarioPacienteDTO) {
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
@@ -72,25 +88,40 @@ public class UsuarioPacienteService {
         usuarioPaciente.setCidade(usuarioPacienteDTO.getCidade());
         usuarioPaciente.setUf(usuarioPacienteDTO.getUf());
         usuarioPaciente.setContato(usuarioPacienteDTO.getContato());
-        usuarioPaciente.setPontos(usuarioPacienteDTO.getPontos());
         usuarioPaciente.setDescontos(usuarioPacienteDTO.getDescontos());
+        usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
 
         usuarioPacienteRepository.save(usuarioPaciente);
-        return ResponseEntity.ok("Usuário atualizado com sucesso.");
+
+
+        UsuarioPacienteDTO dto = convertToDTO(usuarioPaciente);
+        return ResponseEntity.ok(dto);
     }
 
-    @Transactional
-    public ResponseEntity<String> deleteUsuario(Long id) {
-        usuarioPacienteRepository.findById(id)
+    public ResponseEntity<List<UsuarioPacienteDTO>> getAllUsuarios() {
+
+        List<UsuarioPacienteDTO> usuariosDTO = usuarioPacienteRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(usuariosDTO);
+    }
+
+    public ResponseEntity<UsuarioPacienteDTO> getUsuarioPacienteById(Long id) {
+        UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
-        usuarioPacienteRepository.deleteById(id);
-        return ResponseEntity.ok("Usuário deletado com sucesso.");
+        UsuarioPacienteDTO usuarioPacienteDTO = convertToDTO(usuarioPaciente);
+        return ResponseEntity.ok(usuarioPacienteDTO);
+    }
+
+
+    @Transactional
+    public ResponseEntity<Void> deleteUsuario(Long id) {
+        UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
+
+        usuarioPacienteRepository.delete(usuarioPaciente);
+        return ResponseEntity.noContent().build();
     }
 }
-
-
-
-
-
-

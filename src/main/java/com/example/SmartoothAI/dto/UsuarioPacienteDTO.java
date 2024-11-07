@@ -5,11 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Date;
 
 @Data
-public class UsuarioPacienteDTO {
+@EqualsAndHashCode(callSuper = false)
+public class UsuarioPacienteDTO extends RepresentationModel<UsuarioPacienteDTO> {
 
     private Long usuarioPacienteId;
 
@@ -53,9 +56,10 @@ public class UsuarioPacienteDTO {
     @NotBlank(message = "O contato é obrigatório.")
     private String contato;
 
-    private Double pontos;
-
     private Double descontos;
+
+    @NotBlank(message = "A senha é obrigatória.")
+    private String senha;
 }
 
 

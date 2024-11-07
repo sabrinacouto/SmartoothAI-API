@@ -1,10 +1,10 @@
 package com.example.SmartoothAI.repository;
 
-import com.example.SmartoothAI.model.RecomendacaoTrat;
+import com.example.SmartoothAI.model.RecomendacaoTratamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecomendacaoTratRepository extends JpaRepository<RecomendacaoTrat, Long> {
+public interface RecomendacaoTratamentoRepository extends JpaRepository<RecomendacaoTratamento, Long> {
 }
 

@@ -10,7 +10,7 @@ import java.util.Date;
 public class Atendimento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "atendimento_id")
     private Long atendimentoId;
 
@@ -40,6 +40,6 @@ public class Atendimento {
 
     @ManyToOne
     @JoinColumn(name = "recomendacao_trat_id", referencedColumnName = "recomendacao_id")
-    private RecomendacaoTrat recomendacaoTrat;
+    private RecomendacaoTratamento recomendacaoTrat;
 }
 

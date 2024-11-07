@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class RecomendacaoTratDTO {
+public class RecomendacaoTratamentoDTO {
 
     private Long recomendacaoId;
 

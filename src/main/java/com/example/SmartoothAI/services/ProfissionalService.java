@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,17 +18,19 @@ public class ProfissionalService {
 
     private final ProfissionalRepository profissionalRepository;
 
-    public List<Profissional> getAllProfissionais() {
-        return profissionalRepository.findAll();
-    }
-
-    public Profissional getProfissionalById(Long id) {
-        return profissionalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com o ID: " + id));
+    private ProfissionalDTO convertToDTO(Profissional profissional) {
+        ProfissionalDTO dto = new ProfissionalDTO();
+        dto.setProfissionalId(profissional.getProfissionalId());
+        dto.setNome(profissional.getNome());
+        dto.setEspecialidade(profissional.getEspecialidade());
+        dto.setExperiencia(profissional.getExperiencia());
+        dto.setContato(profissional.getContato());
+        dto.setDataRegistro(profissional.getDataRegistro());
+        return dto;
     }
 
     @Transactional
-    public ResponseEntity<String> createProfissional(ProfissionalDTO profissionalDTO) {
+    public ResponseEntity<ProfissionalDTO> createProfissional(ProfissionalDTO profissionalDTO) {
         Profissional profissional = new Profissional();
         profissional.setNome(profissionalDTO.getNome());
         profissional.setEspecialidade(profissionalDTO.getEspecialidade());
@@ -36,11 +39,13 @@ public class ProfissionalService {
         profissional.setDataRegistro(profissionalDTO.getDataRegistro());
 
         profissionalRepository.save(profissional);
-        return ResponseEntity.status(201).body("Profissional cadastrado no sistema com sucesso.");
+
+        ProfissionalDTO dto = convertToDTO(profissional);
+        return ResponseEntity.status(201).body(dto);
     }
 
     @Transactional
-    public ResponseEntity<String> updateProfissional(Long id, ProfissionalDTO profissionalDTO) {
+    public ResponseEntity<ProfissionalDTO> updateProfissional(Long id, ProfissionalDTO profissionalDTO) {
         Profissional profissional = profissionalRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com o ID: " + id));
 
@@ -51,16 +56,35 @@ public class ProfissionalService {
         profissional.setDataRegistro(profissionalDTO.getDataRegistro());
 
         profissionalRepository.save(profissional);
-        return ResponseEntity.ok("Profissional atualizado com sucesso.");
+
+        ProfissionalDTO dto = convertToDTO(profissional);
+        return ResponseEntity.ok(dto);
+    }
+
+    public ResponseEntity<List<ProfissionalDTO>> getAllProfissionais() {
+        List<ProfissionalDTO> profissionaisDTO = profissionalRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(profissionaisDTO);
+    }
+
+    public ResponseEntity<ProfissionalDTO> getProfissionalById(Long id) {
+        Profissional profissional = profissionalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com o ID: " + id));
+
+        ProfissionalDTO profissionalDTO = convertToDTO(profissional);
+        return ResponseEntity.ok(profissionalDTO);
     }
 
     @Transactional
-    public ResponseEntity<String> deleteProfissional(Long id) {
-        profissionalRepository.findById(id)
+    public ResponseEntity<Void> deleteProfissional(Long id) {
+        Profissional profissional = profissionalRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com o ID: " + id));
 
-        profissionalRepository.deleteById(id);
-        return ResponseEntity.ok("Profissional deletado com sucesso.");
+        profissionalRepository.delete(profissional);
+        return ResponseEntity.noContent().build();
     }
 }
+
 

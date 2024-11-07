@@ -1,5 +1,6 @@
 package com.example.SmartoothAI.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.Date;
 public class UsuarioPaciente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "paciente_id")
     private Long usuarioPacienteId;
 
@@ -42,11 +43,12 @@ public class UsuarioPaciente {
 
     private String contato;
 
-    @Column(name = "pontos")
-    private Double pontos;
-
     @Column(name = "descontos")
     private Double descontos;
+
+    @Column(name = "senha", nullable = false)
+    @JsonProperty("senha")
+    private String senha;
 
 }
 

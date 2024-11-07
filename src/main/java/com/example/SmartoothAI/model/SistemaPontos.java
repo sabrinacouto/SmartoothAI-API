@@ -9,7 +9,7 @@ import lombok.Data;
 public class SistemaPontos {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "sistema_pontos_id")
     private Long sistemaPontosId;
 

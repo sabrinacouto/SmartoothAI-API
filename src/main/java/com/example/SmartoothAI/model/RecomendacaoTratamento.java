@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "tb_recomendacao_trat")
-public class RecomendacaoTrat {
+public class RecomendacaoTratamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recomendacao_seq")
