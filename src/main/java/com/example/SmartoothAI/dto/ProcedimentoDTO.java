@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class ProcedimentoDTO {
 
+    private Long procedimentoId;
+
     @NotBlank(message = "O nome do procedimento não pode estar em branco.")
     @Size(max = 85, message = "O nome do procedimento não pode ter mais de 85 caracteres.")
     private String nomeProcedimento;
@@ -24,10 +26,10 @@ public class ProcedimentoDTO {
     @NotNull(message = "O ID do sistema de pontos não pode ser nulo.")
     private Long sistemaPontosId;
 
-    @NotNull(message = "O ID do sistema de pontos do plano não pode ser nulo.")
-    private Long sistPontosPlanoId;
+    @NotNull(message = "O ID do plano não pode ser nulo.")
+    private Long planoId;
 
     @NotNull(message = "O ID do usuário paciente não pode ser nulo.")
-    private Long usPacienteId;
+    private Long usuarioPacienteId;
 }
 
