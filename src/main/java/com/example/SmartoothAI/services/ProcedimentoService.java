@@ -1,83 +1,117 @@
 package com.example.SmartoothAI.services;
 
 import com.example.SmartoothAI.dto.ProcedimentoDTO;
+import com.example.SmartoothAI.exceptions.ResourceNotFoundException;
 import com.example.SmartoothAI.model.Procedimento;
+import com.example.SmartoothAI.model.Prontuario;
+import com.example.SmartoothAI.model.SistemaPontos;
+import com.example.SmartoothAI.model.UsuarioPaciente;
 import com.example.SmartoothAI.repository.ProcedimentoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.SmartoothAI.repository.ProntuarioRepository;
+import com.example.SmartoothAI.repository.SistemaPontosRepository;
+import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProcedimentoService {
 
-    @Autowired
-    private ProcedimentoRepository procedimentoRepository;
+    private final ProcedimentoRepository procedimentoRepository;
+    private final ProntuarioRepository prontuarioRepository;
+    private final SistemaPontosRepository sistemaPontosRepository;
+    private final UsuarioPacienteRepository usuarioPacienteRepository;
 
-    public ResponseEntity<List<ProcedimentoDTO>> getAllProcedimentos() {
+    public List<ProcedimentoDTO> getAllProcedimentos() {
         List<Procedimento> procedimentos = procedimentoRepository.findAll();
-        List<ProcedimentoDTO> procedimentosDTO = procedimentos.stream()
-                .map(this::toDTO)
+        return procedimentos.stream()
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(procedimentosDTO);
     }
 
     public ResponseEntity<ProcedimentoDTO> getProcedimentoById(Long id) {
-        Optional<Procedimento> procedimento = procedimentoRepository.findById(id);
-        if (procedimento.isPresent()) {
-            return ResponseEntity.ok(toDTO(procedimento.get()));
-        }
-        return ResponseEntity.notFound().build();
+        Procedimento procedimento = procedimentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Procedimento não encontrado com o ID: " + id));
+        return ResponseEntity.ok(convertToDTO(procedimento));
     }
 
-    public ResponseEntity<String> save(ProcedimentoDTO procedimentoDTO) {
-        Procedimento procedimento = toEntity(procedimentoDTO);
+    @Transactional
+    public ResponseEntity<String> createProcedimento(ProcedimentoDTO procedimentoDTO) {
+        Prontuario prontuario = prontuarioRepository.findById(procedimentoDTO.getProntuarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Prontuário não encontrado com o ID: " + procedimentoDTO.getProntuarioId()));
+
+        SistemaPontos sistemaPontos = sistemaPontosRepository.findById(procedimentoDTO.getSistemaPontosId())
+                .orElseThrow(() -> new ResourceNotFoundException("Sistema de Pontos não encontrado com o ID: " + procedimentoDTO.getSistemaPontosId()));
+
+        UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(procedimentoDTO.getUsuarioPacienteId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário Paciente não encontrado com o ID: " + procedimentoDTO.getUsuarioPacienteId()));
+
+        Procedimento procedimento = convertToEntity(procedimentoDTO, prontuario, sistemaPontos, usuarioPaciente);
         procedimentoRepository.save(procedimento);
-        return ResponseEntity.ok("Procedimento criado com sucesso.");
+        return ResponseEntity.status(201).body("Procedimento criado com sucesso.");
     }
 
-    public ResponseEntity<String> update(Long id, ProcedimentoDTO procedimentoDTO) {
-        if (!procedimentoRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        Procedimento procedimento = toEntity(procedimentoDTO);
-        procedimento.setProcedimentoId(id);
+    @Transactional
+    public ResponseEntity<String> updateProcedimento(Long id, ProcedimentoDTO procedimentoDTO) {
+        Procedimento procedimento = procedimentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Procedimento não encontrado com o ID: " + id));
+
+        Prontuario prontuario = prontuarioRepository.findById(procedimentoDTO.getProntuarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Prontuário não encontrado com o ID: " + procedimentoDTO.getProntuarioId()));
+
+        SistemaPontos sistemaPontos = sistemaPontosRepository.findById(procedimentoDTO.getSistemaPontosId())
+                .orElseThrow(() -> new ResourceNotFoundException("Sistema de Pontos não encontrado com o ID: " + procedimentoDTO.getSistemaPontosId()));
+
+        UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(procedimentoDTO.getUsuarioPacienteId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário Paciente não encontrado com o ID: " + procedimentoDTO.getUsuarioPacienteId()));
+
+        procedimento.setNomeProcedimento(procedimentoDTO.getNomeProcedimento());
+        procedimento.setDescricao(procedimentoDTO.getDescricao());
+        procedimento.setInclusaoPlano(procedimentoDTO.getInclusaoPlano());
+        procedimento.setProntuario(prontuario);
+        procedimento.setSistemaPontos(sistemaPontos);
+        procedimento.setUsuarioPaciente(usuarioPaciente);
+
         procedimentoRepository.save(procedimento);
         return ResponseEntity.ok("Procedimento atualizado com sucesso.");
     }
 
-    public ResponseEntity<String> delete(Long id) {
-        if (!procedimentoRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+    @Transactional
+    public ResponseEntity<Void> deleteProcedimento(Long id) {
+        procedimentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Procedimento não encontrado com o ID: " + id));
+
         procedimentoRepository.deleteById(id);
-        return ResponseEntity.ok("Procedimento deletado com sucesso.");
+        return ResponseEntity.noContent().build();
     }
 
-    private ProcedimentoDTO toDTO(Procedimento procedimento) {
-        ProcedimentoDTO procedimentoDTO = new ProcedimentoDTO();
-        procedimentoDTO.setProcedimentoId(procedimento.getProcedimentoId());
-        procedimentoDTO.setNomeProcedimento(procedimento.getNomeProcedimento());
-        procedimentoDTO.setDescricao(procedimento.getDescricao());
-        procedimentoDTO.setInclusaoPlano(procedimento.getInclusaoPlano());
-        procedimentoDTO.setProntuarioId(procedimento.getProntuarioId());
-        procedimentoDTO.setSistemaPontosId(procedimento.getSistemaPontosId());
-        procedimentoDTO.setUsuarioPacienteId(procedimento.getUsPacienteId());
-        return procedimentoDTO;
+
+    private Procedimento convertToEntity(ProcedimentoDTO dto, Prontuario prontuario, SistemaPontos sistemaPontos, UsuarioPaciente usuarioPaciente) {
+        Procedimento entity = new Procedimento();
+        entity.setNomeProcedimento(dto.getNomeProcedimento());
+        entity.setDescricao(dto.getDescricao());
+        entity.setInclusaoPlano(dto.getInclusaoPlano());
+        entity.setProntuario(prontuario);
+        entity.setSistemaPontos(sistemaPontos);
+        entity.setUsuarioPaciente(usuarioPaciente);
+        return entity;
     }
 
-    private Procedimento toEntity(ProcedimentoDTO procedimentoDTO) {
-        Procedimento procedimento = new Procedimento();
-        procedimento.setNomeProcedimento(procedimentoDTO.getNomeProcedimento());
-        procedimento.setDescricao(procedimentoDTO.getDescricao());
-        procedimento.setInclusaoPlano(procedimentoDTO.getInclusaoPlano());
-        procedimento.setProntuarioId(procedimentoDTO.getProntuarioId());
-        procedimento.setSistemaPontosId(procedimentoDTO.getSistemaPontosId());
-        procedimento.setUsPacienteId(procedimentoDTO.getUsuarioPacienteId());
-        return procedimento;
+    private ProcedimentoDTO convertToDTO(Procedimento entity) {
+        ProcedimentoDTO dto = new ProcedimentoDTO();
+        dto.setProcedimentoId(entity.getProcedimentoId());
+        dto.setNomeProcedimento(entity.getNomeProcedimento());
+        dto.setDescricao(entity.getDescricao());
+        dto.setInclusaoPlano(entity.getInclusaoPlano());
+        dto.setProntuarioId(entity.getProntuario().getProntuarioId());
+        dto.setSistemaPontosId(entity.getSistemaPontos().getSistemaPontosId());
+        dto.setUsuarioPacienteId(entity.getUsuarioPaciente().getUsuarioPacienteId());
+        return dto;
     }
 }
 

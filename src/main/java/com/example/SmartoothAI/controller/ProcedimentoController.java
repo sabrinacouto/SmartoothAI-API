@@ -3,64 +3,60 @@ package com.example.SmartoothAI.controller;
 import com.example.SmartoothAI.dto.ProcedimentoDTO;
 import com.example.SmartoothAI.services.ProcedimentoService;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/procedimentos")
+@RequiredArgsConstructor
 public class ProcedimentoController {
 
     private final ProcedimentoService procedimentoService;
 
-    public ProcedimentoController(ProcedimentoService procedimentoService) {
-        this.procedimentoService = procedimentoService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<EntityModel<ProcedimentoDTO>>> getAllProcedimentos() {
-        List<EntityModel<ProcedimentoDTO>> procedimentosDTO = procedimentoService.getAllProcedimentos().getBody().stream()
-                .map(this::toEntityModel)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(procedimentosDTO);
+    @PostMapping
+    public ResponseEntity<String> createProcedimento(@Valid @RequestBody ProcedimentoDTO procedimentoDTO) {
+        return procedimentoService.createProcedimento(procedimentoDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<ProcedimentoDTO>> getProcedimentoById(@PathVariable Long id) {
         ProcedimentoDTO procedimentoDTO = procedimentoService.getProcedimentoById(id).getBody();
-        return ResponseEntity.ok(toEntityModel(procedimentoDTO));
-    }
 
-    @PostMapping
-    public ResponseEntity<String> createProcedimento(@RequestBody ProcedimentoDTO procedimentoDTO) {
-        return procedimentoService.save(procedimentoDTO);
+        EntityModel<ProcedimentoDTO> procedimentoModel = EntityModel.of(procedimentoDTO,
+                linkTo(methodOn(ProcedimentoController.class).getProcedimentoById(id)).withSelfRel(),
+                linkTo(methodOn(ProcedimentoController.class).getAllProcedimentos()).withRel("procedimentos"));
+
+        return ResponseEntity.ok(procedimentoModel);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProcedimento(@PathVariable Long id, @RequestBody ProcedimentoDTO procedimentoDTO) {
-        return procedimentoService.update(id, procedimentoDTO);
+    public ResponseEntity<String> updateProcedimento(@PathVariable Long id,
+                                                     @Valid @RequestBody ProcedimentoDTO procedimentoDTO) {
+        return procedimentoService.updateProcedimento(id, procedimentoDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProcedimento(@PathVariable Long id) {
-        return procedimentoService.delete(id);
+    public ResponseEntity<Void> deleteProcedimento(@PathVariable Long id) {
+        return procedimentoService.deleteProcedimento(id);
     }
 
-    private EntityModel<ProcedimentoDTO> toEntityModel(ProcedimentoDTO procedimentoDTO) {
-        EntityModel<ProcedimentoDTO> entityModel = EntityModel.of(procedimentoDTO);
-        Link selfLink = linkTo(ProcedimentoController.class)
-                .slash(procedimentoDTO.getProcedimentoId())
-                .withSelfRel();
-        entityModel.add(selfLink);
+    @GetMapping
+    public ResponseEntity<CollectionModel<EntityModel<ProcedimentoDTO>>> getAllProcedimentos() {
+        List<EntityModel<ProcedimentoDTO>> procedimentosModels = procedimentoService.getAllProcedimentos().stream()
+                .map(procedimentoDTO -> EntityModel.of(procedimentoDTO,
+                        linkTo(methodOn(ProcedimentoController.class).getProcedimentoById(procedimentoDTO.getProcedimentoId())).withSelfRel()))
+                .collect(Collectors.toList());
 
-        Link allLinks = linkTo(ProcedimentoController.class).withRel("all-procedimentos");
-        entityModel.add(allLinks);
-
-        return entityModel;
+        return ResponseEntity.ok(CollectionModel.of(procedimentosModels));
     }
 }
+
