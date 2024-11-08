@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,7 +16,8 @@ import java.util.Date;
 public class UsuarioPaciente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_paciente_seq")
+    @SequenceGenerator(name = "usuario_paciente_seq", sequenceName = "paciente_id", allocationSize = 1)
     @Column(name = "paciente_id")
     private Long usuarioPacienteId;
 
@@ -51,5 +53,7 @@ public class UsuarioPaciente {
     private String senha;
 
 }
+
+
 
 

@@ -15,9 +15,9 @@ public class Dicas {
     @Column(name = "descricao", length = 255)
     private String descricao;
     @ManyToOne
-    @JoinColumn(name = "prontuario_prontuario_id", nullable = false)
+    @JoinColumn(name = "prontuario_id", nullable = false)
     private Prontuario prontuario;
     @ManyToOne
-    @JoinColumn(name = "usuario_paciente_paciente_id", nullable = false)
+    @JoinColumn(name = "paciente_id", nullable = false)
     private UsuarioPaciente usuarioPaciente;
 }

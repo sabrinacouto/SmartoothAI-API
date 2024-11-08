@@ -40,6 +40,10 @@ public class PlanoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário Paciente não encontrado com o ID: " + planoDTO.getUsuarioPacienteId()));
 
         Plano plano = convertToEntity(planoDTO, usuarioPaciente);
+
+
+
+        System.out.println(plano);
         planoRepository.save(plano);
         return ResponseEntity.status(201).body("Plano criado com sucesso.");
     }
@@ -74,6 +78,7 @@ public class PlanoService {
     // Métodos de conversão de DTO para entidade
     private Plano convertToEntity(PlanoDTO dto, UsuarioPaciente usuarioPaciente) {
         Plano entity = new Plano();
+        entity.setPlanoId(dto.getPlanoId());
         entity.setDescricao(dto.getDescricao());
         entity.setTipoPagamento(dto.getTipoPagamento());
         entity.setTipoPlano(dto.getTipoPlano());

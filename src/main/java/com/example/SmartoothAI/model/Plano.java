@@ -2,7 +2,7 @@ package com.example.SmartoothAI.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Date;
+
 
 @Data
 @Entity
@@ -28,7 +28,7 @@ public class Plano {
     private String tipoPagamento;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_paciente_paciente_id", nullable = false)
+    @JoinColumn(name = "usuario_paciente_id", nullable = false)
     private UsuarioPaciente usuarioPaciente;
 }
 

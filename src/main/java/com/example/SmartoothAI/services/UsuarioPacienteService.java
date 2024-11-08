@@ -36,6 +36,7 @@ public class UsuarioPacienteService {
         dto.setUf(usuarioPaciente.getUf());
         dto.setContato(usuarioPaciente.getContato());
         dto.setDescontos(usuarioPaciente.getDescontos());
+        dto.setSenha(usuarioPaciente.getSenha());
         return dto;
     }
 

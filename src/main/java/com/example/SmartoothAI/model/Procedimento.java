@@ -32,11 +32,11 @@ public class Procedimento {
     private SistemaPontos sistemaPontos;
 
     @ManyToOne
-    @JoinColumn(name = "sist_pontos_plano_id", nullable = false)
+    @JoinColumn(name = "plano_id", nullable = false)
     private Plano plano;
 
     @ManyToOne
-    @JoinColumn(name = "us_paciente_id", nullable = false)
+    @JoinColumn(name = "paciente_id", nullable = false)
     private UsuarioPaciente usuarioPaciente;
 }
 

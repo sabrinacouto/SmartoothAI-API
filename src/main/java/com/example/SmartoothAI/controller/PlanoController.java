@@ -23,9 +23,10 @@ public class PlanoController {
     private final PlanoService planoService;
 
     @PostMapping
-    public ResponseEntity<String> createPlano(@Valid @RequestBody PlanoDTO planoDTO) {
+    public ResponseEntity<String> createPlano(@RequestBody @Valid PlanoDTO planoDTO) {
         return planoService.createPlano(planoDTO);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<PlanoDTO>> getPlanoById(@PathVariable Long id) {

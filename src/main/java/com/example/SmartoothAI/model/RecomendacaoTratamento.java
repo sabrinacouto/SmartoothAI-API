@@ -20,7 +20,7 @@ public class RecomendacaoTratamento {
     private Date dataRec;
 
     @ManyToOne
-    @JoinColumn(name = "plano_plano_id", nullable = false)
+    @JoinColumn(name = "plano_id", nullable = false)
     private Plano plano;
 
 }
