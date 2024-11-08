@@ -12,7 +12,7 @@ public class SwaggerConfig {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("public")
-                .packagesToScan("com.example.SmartoothAI.Controller")
+                .packagesToScan("com.example.SmartoothAI.controller")
                 .build();
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-@RequestMapping("/profissional")
+@RequestMapping("/ ")
 @RequiredArgsConstructor
 public class ProfissionalController {
 
