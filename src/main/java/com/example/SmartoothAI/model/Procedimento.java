@@ -36,7 +36,7 @@ public class Procedimento {
     private Plano plano;
 
     @ManyToOne
-    @JoinColumn(name = "paciente_id", nullable = false)
+    @JoinColumn(name = "usuario_paciente_id", nullable = false)
     private UsuarioPaciente usuarioPaciente;
 }
 

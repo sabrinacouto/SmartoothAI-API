@@ -20,7 +20,7 @@ public class AtendimentoDTO {
     @NotNull(message = "A hora é obrigatória.")
     private Date hora;
 
-    @NotBlank(message = "O status de inclusão no plano é obrigatório.")
+    @NotNull(message = "O status de inclusão no plano é obrigatório.")
     private char inclusoPlano;
 
     @NotNull(message = "O custo é obrigatório.")

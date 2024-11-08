@@ -31,15 +31,15 @@ public class Atendimento {
     private Double custo;
 
     @ManyToOne
-    @JoinColumn(name = "paciente_id", referencedColumnName = "paciente_id")
+    @JoinColumn(name = "usuario_paciente_id", nullable = false)
     private UsuarioPaciente usuarioPaciente;
 
     @ManyToOne
-    @JoinColumn(name = "profissional_id", referencedColumnName = "profissional_id")
+    @JoinColumn(name = "profissional_id", nullable = false)
     private Profissional profissional;
 
     @ManyToOne
-    @JoinColumn(name = "recomendacao_trat_id", referencedColumnName = "recomendacao_id")
+    @JoinColumn(name = "recomendacao_trat_id", nullable = false)
     private RecomendacaoTratamento recomendacaoTrat;
 }
 

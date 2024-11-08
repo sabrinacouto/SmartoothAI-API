@@ -70,6 +70,7 @@ public class DicasService {
 
     private Dicas toEntity(DicasDTO dicasDTO) {
         Dicas dicas = new Dicas();
+        dicas.setDicaId(dicasDTO.getDicaId());
         dicas.setDescricao(dicasDTO.getDescricao());
         dicas.setProntuario(prontuarioRepository.findById(dicasDTO.getProntuarioId()).orElseThrow());
         dicas.setUsuarioPaciente(usuarioPacienteRepository.findById(dicasDTO.getUsuarioPacienteId()).orElseThrow());

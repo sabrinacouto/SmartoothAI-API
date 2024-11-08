@@ -73,6 +73,7 @@ public class AtendimentoService {
 
     private Atendimento toEntity(AtendimentoDTO atendimentoDTO) {
         Atendimento atendimento = new Atendimento();
+        atendimento.setAtendimentoId(atendimentoDTO.getAtendimentoId());
         atendimento.setDescricao(atendimentoDTO.getDescricao());
         atendimento.setData(atendimentoDTO.getData());
         atendimento.setHora(atendimentoDTO.getHora());
