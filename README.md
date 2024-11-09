@@ -9,19 +9,19 @@ Neste repositório encontra-se a API responsável pelo gerenciamento de profissi
 
 ## 🪐 Developers 
 
-- [Sabrina Couto](https://github.com/sabrinacouto) 
-- [Juliana Mo.](https://github.com/julianamo93) 
-- [Kevin Nobre](https://github.com/KevinNobre) 
+- [Sabrina Couto](https://github.com/sabrinacouto) - Backend Developer
+- [Juliana Mo.](https://github.com/julianamo93) - Modelagem de Dados e Cloud
+- [Kevin Nobre](https://github.com/KevinNobre) - Backend e Front
 
 ## Modelo DER
 
-![diagramJavaSprint](https://media.discordapp.net/attachments/1273452588343230546/1292880955614167121/Relational_1_1.png?ex=670558b8&is=67040738&hm=b032a4f4354a2ddcde398b3c55f869d3814a1c46a8eaf709091387e722bae0e1&=&format=webp&quality=lossless&width=1101&height=662)
+![diagramJavaSprint](https://media.discordapp.net/attachments/1297737020248031284/1304642071910420480/Captura_de_tela_2024-11-09_000136.png?ex=6730221d&is=672ed09d&hm=dc35c7d93a72912c58abb7dd4f6b0348b64291741ff7d666ac6eb07331fd3e05&=&format=webp&quality=lossless&width=1098&height=643)
 
 
 
 ## Diagrama de Classes
 
-![diagramJavaSprint](https://media.discordapp.net/attachments/1273452588343230546/1292880903823036548/Diagrama_de_Classe.jpg?ex=670558ac&is=6704072c&hm=0033ffce8f3e9ce27f89ce91280b08b58eb2710eb085e659c3b2ca564497fe1f&=&format=webp&width=1112&height=662)
+![diagramJavaSprint](https://media.discordapp.net/attachments/1297737020248031284/1304642575147208734/new.jpg?ex=67302295&is=672ed115&hm=f7b68a482f4c75a6f8a47be376edb37f8eddeb2e9a3fec112ddcc19dd16e761b&=&format=webp&width=662&height=437)
 
 ## 💬 Rodando localmente
 
