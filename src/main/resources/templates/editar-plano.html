@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Plano</title>
+</head>
+<body>
+<h1>Editar Plano</h1>
+
+<form th:action="@{/plano/editar/{id}(id=${plano.planoId})}" method="post">
+    <label for="tipoPlano">Tipo do Plano:</label>
+    <input type="text" id="tipoPlano" name="tipoPlano" th:value="${plano.tipoPlano}"><br>
+
+    <label for="descricao">Descrição:</label>
+    <input type="text" id="descricao" name="descricao" th:value="${plano.descricao}"><br>
+
+    <label for="marcaPlano">Marca:</label>
+    <input type="text" id="marcaPlano" name="marcaPlano" th:value="${plano.marcaPlano}"><br>
+
+    <label for="tipoPagamento">Tipo de Pagamento:</label>
+    <input type="text" id="tipoPagamento" name="tipoPagamento" th:value="${plano.tipoPagamento}"><br>
+
+    <button type="submit">Salvar</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Bem-vindo à Home</h1>
+
+<div>
+    <h2>Planos Cadastrados</h2>
+
+    <div th:if="${#lists.isEmpty(planos)}">
+        <p th:text="${mensagem}"></p>
+    </div>
+
+    <!-- Se houver planos cadastrados -->
+    <div th:each="plano : ${planos}">
+        <p>
+            Tipo de Plano: <span th:text="${plano.tipoPlano}"></span><br>
+            Descrição: <span th:text="${plano.descricao}"></span><br>
+            Marca: <span th:text="${plano.marcaPlano}"></span><br>
+            Tipo de Pagamento: <span th:text="${plano.tipoPagamento}"></span><br>
+
+            <a th:href="@{/plano/editar/{id}(id=${plano.planoId})}">Editar</a> |
+        <form th:action="@{/plano/excluir/{id}(id=${plano.planoId})}" method="post">
+            <button type="submit">Excluir</button>
+        </form>
+        </p>
+    </div>
+</div>
+</body>
+</html>
