@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ public class UsuarioPacienteDTO extends RepresentationModel<UsuarioPacienteDTO> 
     private String email;
 
     @NotNull(message = "A data de nascimento é obrigatória.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dataNasc;
 
     @NotBlank(message = "O gênero é obrigatório.")

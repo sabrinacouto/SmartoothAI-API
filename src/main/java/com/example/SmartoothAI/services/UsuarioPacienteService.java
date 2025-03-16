@@ -6,11 +6,10 @@ import com.example.SmartoothAI.exceptions.ResourceNotFoundException;
 import com.example.SmartoothAI.model.UsuarioPaciente;
 import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,12 +40,10 @@ public class UsuarioPacienteService {
     }
 
     @Transactional
-    public ResponseEntity<UsuarioPacienteDTO> createUsuario(UsuarioPacienteDTO usuarioPacienteDTO) {
-
+    public void createUsuario(UsuarioPacienteDTO usuarioPacienteDTO) {
         if (usuarioPacienteRepository.findByEmail(usuarioPacienteDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("Já existe um usuário com este e-mail.");
         }
-
 
         UsuarioPaciente usuarioPaciente = new UsuarioPaciente();
         usuarioPaciente.setNome(usuarioPacienteDTO.getNome());
@@ -66,13 +63,11 @@ public class UsuarioPacienteService {
         usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
 
         usuarioPacienteRepository.save(usuarioPaciente);
-
-        UsuarioPacienteDTO dto = convertToDTO(usuarioPaciente);
-        return ResponseEntity.status(201).body(dto);
+        System.out.println("Usuário salvo no banco!");
     }
 
     @Transactional
-    public ResponseEntity<UsuarioPacienteDTO> updateUsuario(Long id, UsuarioPacienteDTO usuarioPacienteDTO) {
+    public void updateUsuario(Long id, UsuarioPacienteDTO usuarioPacienteDTO) {
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
@@ -93,36 +88,43 @@ public class UsuarioPacienteService {
         usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
 
         usuarioPacienteRepository.save(usuarioPaciente);
-
-
-        UsuarioPacienteDTO dto = convertToDTO(usuarioPaciente);
-        return ResponseEntity.ok(dto);
     }
 
-    public ResponseEntity<List<UsuarioPacienteDTO>> getAllUsuarios() {
-
-        List<UsuarioPacienteDTO> usuariosDTO = usuarioPacienteRepository.findAll().stream()
+    public List<UsuarioPacienteDTO> getAllUsuarios() {
+        return usuarioPacienteRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
-
-        return ResponseEntity.ok(usuariosDTO);
     }
 
-    public ResponseEntity<UsuarioPacienteDTO> getUsuarioPacienteById(Long id) {
+    public UsuarioPacienteDTO getUsuarioPacienteById(Long id) {
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
-        UsuarioPacienteDTO usuarioPacienteDTO = convertToDTO(usuarioPaciente);
-        return ResponseEntity.ok(usuarioPacienteDTO);
+        return convertToDTO(usuarioPaciente);
     }
 
-
     @Transactional
-    public ResponseEntity<Void> deleteUsuario(Long id) {
+    public void deleteUsuario(Long id) {
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
         usuarioPacienteRepository.delete(usuarioPaciente);
-        return ResponseEntity.noContent().build();
     }
+
+    public UsuarioPacienteDTO authenticateUser(String email, String senha) {
+        Optional<UsuarioPaciente> usuario = usuarioPacienteRepository.findByEmail(email);
+
+        if (usuario.isPresent() && usuario.get().getSenha().equals(senha)) {
+            // Se o email existir e a senha for correta, retorna os dados do usuário
+            UsuarioPaciente usuarioPaciente = usuario.get();
+            UsuarioPacienteDTO usuarioDTO = new UsuarioPacienteDTO();
+            usuarioDTO.setUsuarioPacienteId(usuarioPaciente.getUsuarioPacienteId());
+            usuarioDTO.setNome(usuarioPaciente.getNome());
+            usuarioDTO.setEmail(usuarioPaciente.getEmail());
+            // Adicione mais campos conforme necessário
+            return usuarioDTO;
+        }
+        return null; // Retorna null se o usuário não for encontrado ou a senha estiver incorreta
+    }
+
 }

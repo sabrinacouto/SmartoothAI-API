@@ -2,69 +2,53 @@ package com.example.SmartoothAI.controller;
 
 import com.example.SmartoothAI.dto.PlanoDTO;
 import com.example.SmartoothAI.services.PlanoService;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
-@RestController
+@Controller
 @RequestMapping("/planos")
 @RequiredArgsConstructor
 public class PlanoController {
 
     private final PlanoService planoService;
 
-    @PostMapping
-    public ResponseEntity<String> createPlano(@RequestBody @Valid PlanoDTO planoDTO) {
-        return planoService.createPlano(planoDTO);
+    @GetMapping("/cadastro")
+    public String showCadastroForm(Model model) {
+        model.addAttribute("planoDTO", new PlanoDTO());
+        return "cadastro-plano";
+    }
+
+    @PostMapping("/cadastro")
+    public String createPlano(@ModelAttribute("planoDTO") PlanoDTO planoDTO) {
+        planoService.createPlano(planoDTO);
+        return "redirect:/home";
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<PlanoDTO>> getPlanoById(@PathVariable Long id) {
-        PlanoDTO planoDTO = planoService.getPlanoById(id).getBody();
-
-
-        EntityModel<PlanoDTO> planoModel = EntityModel.of(planoDTO,
-                linkTo(methodOn(PlanoController.class).getPlanoById(id)).withSelfRel(),
-                linkTo(methodOn(PlanoController.class).getAllPlanos()).withRel("planos"));
-
-        return ResponseEntity.ok(planoModel);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updatePlano(@PathVariable Long id,
-                                              @Valid @RequestBody PlanoDTO planoDTO) {
-        return planoService.updatePlano(id, planoDTO);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePlano(@PathVariable Long id) {
-        planoService.deletePlano(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping
-    public ResponseEntity<CollectionModel<EntityModel<PlanoDTO>>> getAllPlanos() {
-        List<EntityModel<PlanoDTO>> planosModels = new ArrayList<>();
-
-        List<PlanoDTO> planosDTO = planoService.getAllPlanos();
-
-        for (PlanoDTO planoDTO : planosDTO) {
-            EntityModel<PlanoDTO> planoModel = EntityModel.of(planoDTO,
-                    linkTo(methodOn(PlanoController.class).getPlanoById(planoDTO.getPlanoId())).withSelfRel());
-            planosModels.add(planoModel);
+    @GetMapping("/{id}/editar")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        PlanoDTO planoDTO = planoService.getPlanoById(id);
+        if (planoDTO != null) {
+            model.addAttribute("planoDTO", planoDTO);
+            return "editar-plano";
         }
+        return "redirect:/home";
+    }
 
-        return ResponseEntity.ok(CollectionModel.of(planosModels));
+    @PostMapping("/{id}/editar")
+    public String updatePlano(@PathVariable Long id, @ModelAttribute("planoDTO") PlanoDTO planoDTO) {
+        planoService.updatePlano(id, planoDTO);
+        return "redirect:/home";
+    }
+
+    @GetMapping("/{id}/excluir")
+    public String deletePlano(@PathVariable Long id) {
+        planoService.deletePlano(id);
+        return "redirect:/home";
     }
 }
+
 
