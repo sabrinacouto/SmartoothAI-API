@@ -18,9 +18,10 @@ public class UsuarioPacienteService {
 
     private final UsuarioPacienteRepository usuarioPacienteRepository;
 
+
     private UsuarioPacienteDTO convertToDTO(UsuarioPaciente usuarioPaciente) {
         UsuarioPacienteDTO dto = new UsuarioPacienteDTO();
-        dto.setUsuarioPacienteId(usuarioPaciente.getUsuarioPacienteId());
+        dto.setPacienteId(usuarioPaciente.getPacienteId());
         dto.setNome(usuarioPaciente.getNome());
         dto.setSobrenome(usuarioPaciente.getSobrenome());
         dto.setEmail(usuarioPaciente.getEmail());
@@ -118,13 +119,13 @@ public class UsuarioPacienteService {
             // Se o email existir e a senha for correta, retorna os dados do usuário
             UsuarioPaciente usuarioPaciente = usuario.get();
             UsuarioPacienteDTO usuarioDTO = new UsuarioPacienteDTO();
-            usuarioDTO.setUsuarioPacienteId(usuarioPaciente.getUsuarioPacienteId());
+            usuarioDTO.setPacienteId(usuarioPaciente.getPacienteId());
             usuarioDTO.setNome(usuarioPaciente.getNome());
             usuarioDTO.setEmail(usuarioPaciente.getEmail());
             // Adicione mais campos conforme necessário
             return usuarioDTO;
         }
-        return null; // Retorna null se o usuário não for encontrado ou a senha estiver incorreta
+        return null;
     }
 
 }

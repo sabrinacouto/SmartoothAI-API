@@ -9,7 +9,7 @@
 <h1>Cadastro de Usuário</h1>
 
 <form th:action="@{/cadastro}" method="post" th:object="${usuario}">
-    <input type="hidden" th:field="*{usuarioPacienteId}">
+    <input type="hidden" th:field="*{pacienteId}">
 
     <label>Nome:</label>
     <input type="text" th:field="*{nome}" required>

@@ -15,7 +15,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 public class UsuarioPacienteDTO extends RepresentationModel<UsuarioPacienteDTO> {
 
-    private Long usuarioPacienteId;
+    private Long pacienteId;
 
     @NotBlank(message = "O nome é obrigatório.")
     private String nome;

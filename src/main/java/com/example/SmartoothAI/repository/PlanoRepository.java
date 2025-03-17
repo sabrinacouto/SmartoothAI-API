@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PlanoRepository extends JpaRepository<Plano, Long> {
-    List<Plano> findByUsuarioPacienteId(Long usuarioPacienteId);
+
+    List<Plano> findByUsuarioPaciente_PacienteId(Long pacienteId);;
 }
 

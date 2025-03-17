@@ -24,7 +24,7 @@ public class UsuarioPacienteController {
 
     @GetMapping("/home")
     public String showHomePage(Model model) {
-        Long usuarioId = getUsuarioLogadoId();  // Implementar lógica para obter o usuário logado
+        Long usuarioId = getUsuarioLogadoId();
 
         List<PlanoDTO> planos = planoService.getPlanosByUsuarioId(usuarioId);
 

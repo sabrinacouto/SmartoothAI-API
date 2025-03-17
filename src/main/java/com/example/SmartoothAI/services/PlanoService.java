@@ -10,17 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.SmartoothAI.dto.PlanoDTO;
-import com.example.SmartoothAI.model.Plano;
-import com.example.SmartoothAI.model.UsuarioPaciente;
-import com.example.SmartoothAI.repository.PlanoRepository;
-import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.SmartoothAI.model.UsuarioPaciente;
+import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -39,9 +31,9 @@ public class PlanoService {
             plano.setTipoPlano(planoDTO.getTipoPlano());
             plano.setMarcaPlano(planoDTO.getMarcaPlano());
             plano.setTipoPagamento(planoDTO.getTipoPagamento());
-            plano.setUsuarioPaciente(usuarioPaciente.get()); // Associando o usuário paciente
+            plano.setUsuarioPaciente(usuarioPaciente.get());
 
-            planoRepository.save(plano); // Salva no banco
+            planoRepository.save(plano);
         } else {
             throw new IllegalArgumentException("Usuário paciente não encontrado.");
         }
@@ -56,7 +48,7 @@ public class PlanoService {
             planoDTO.setTipoPlano(plano.get().getTipoPlano());
             planoDTO.setMarcaPlano(plano.get().getMarcaPlano());
             planoDTO.setTipoPagamento(plano.get().getTipoPagamento());
-            planoDTO.setUsuarioPacienteId(plano.get().getUsuarioPaciente().getUsuarioPacienteId());
+            planoDTO.setUsuarioPacienteId(plano.get().getUsuarioPaciente().getPacienteId());
             return planoDTO;
         }
         return null;
@@ -96,14 +88,14 @@ public class PlanoService {
             planoDTO.setTipoPlano(plano.getTipoPlano());
             planoDTO.setMarcaPlano(plano.getMarcaPlano());
             planoDTO.setTipoPagamento(plano.getTipoPagamento());
-            planoDTO.setUsuarioPacienteId(plano.getUsuarioPaciente().getUsuarioPacienteId());
+            planoDTO.setUsuarioPacienteId(plano.getUsuarioPaciente().getPacienteId());
             return planoDTO;
         }).toList();
     }
 
     public List<PlanoDTO> getPlanosByUsuarioId(Long usuarioId) {
         // Verifique se o método findByUsuarioPacienteId está correto no repositório
-        List<Plano> planos = planoRepository.findByUsuarioPacienteId(usuarioId);
+        List<Plano> planos = planoRepository. findByUsuarioPaciente_PacienteId(usuarioId);
 
         // Convertendo a lista de planos em DTOs
         return planos.stream().map(plano -> {
@@ -113,7 +105,7 @@ public class PlanoService {
             planoDTO.setDescricao(plano.getDescricao());
             planoDTO.setMarcaPlano(plano.getMarcaPlano());
             planoDTO.setTipoPagamento(plano.getTipoPagamento());
-            planoDTO.setUsuarioPacienteId(plano.getUsuarioPaciente().getUsuarioPacienteId());  // Asegure-se de ter o getter correto
+            planoDTO.setUsuarioPacienteId(plano.getUsuarioPaciente().getPacienteId());
             return planoDTO;
         }).toList();
     }
