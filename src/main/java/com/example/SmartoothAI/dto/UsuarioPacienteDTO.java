@@ -62,6 +62,7 @@ public class UsuarioPacienteDTO extends RepresentationModel<UsuarioPacienteDTO> 
 
     @NotBlank(message = "A senha é obrigatória.")
     private String senha;
+
 }
 
 

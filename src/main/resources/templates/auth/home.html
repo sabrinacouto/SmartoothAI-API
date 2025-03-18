@@ -7,22 +7,16 @@
 <body>
 <h1>Bem-vindo à Home</h1>
 
-<!-- Botão para editar dados do usuário -->
-<a th:href="@{/usuario/editar}" style="display: inline-block; margin-bottom: 15px;">
-    <button>Editar Dados do Usuário</button>
-</a>
-
 <div>
     <h2>Planos Cadastrados</h2>
 
-    <!-- Se não houver planos, exibir mensagem e botão para cadastrar -->
     <div th:if="${#lists.isEmpty(planos)}">
-        <p>Você não possui planos cadastrados.</p>
-        <a th:href="@{/plano/cadastro-plano}">
+        <p th:text="${mensagem}"></p>
+        <!-- Botão para cadastrar plano -->
+        <a th:href="@{/planos/cadastro}">
             <button>Cadastrar Plano</button>
         </a>
     </div>
-
 
     <div th:each="plano : ${planos}">
         <p>
@@ -31,16 +25,24 @@
             Marca: <span th:text="${plano.marcaPlano}"></span><br>
             Tipo de Pagamento: <span th:text="${plano.tipoPagamento}"></span><br>
 
-            <a th:href="@{/plano/editar/{id}(id=${plano.planoId})}">
-                <button>Editar</button>
-            </a>
+            <a th:href="@{/planos/{id}/editar(id=${plano.planoId})}">Editar Plano</a>
 
-        <form th:action="@{/plano/excluir/{id}(id=${plano.planoId})}" method="post" style="display: inline;">
+
+
+        <form th:action="@{/planos/{id}/excluir(id=${plano.planoId})}" method="post"
+              onsubmit="return confirm('Tem certeza que deseja excluir?');">
+            <input type="hidden" name="_method" value="delete" />
             <button type="submit">Excluir</button>
         </form>
+
         </p>
     </div>
 </div>
+
+<!-- Botão para editar os dados do usuário -->
+<a th:href="@{/editar}">
+    <button>Editar Perfil</button>
+</a>
 
 </body>
 </html>

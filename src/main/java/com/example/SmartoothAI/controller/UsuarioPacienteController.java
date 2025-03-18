@@ -4,16 +4,15 @@ import com.example.SmartoothAI.dto.PlanoDTO;
 import com.example.SmartoothAI.dto.UsuarioPacienteDTO;
 import com.example.SmartoothAI.services.PlanoService;
 import com.example.SmartoothAI.services.UsuarioPacienteService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -22,107 +21,137 @@ public class UsuarioPacienteController {
     private final UsuarioPacienteService usuarioPacienteService;
     private final PlanoService planoService;
 
-    @GetMapping("/home")
-    public String showHomePage(Model model) {
-        Long usuarioId = getUsuarioLogadoId();
+    // 🔹 Obtém o ID do usuário logado
+    private Long getUsuarioLogadoId(HttpSession session) {
+        Object usuarioId = session.getAttribute("usuarioLogadoId");
+        if (usuarioId instanceof Long) {
+            return (Long) usuarioId;
+        }
+        return null;
+    }
 
-        List<PlanoDTO> planos = planoService.getPlanosByUsuarioId(usuarioId);
+    // 🔹 Exibe formulário de login
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "auth/login";
+    }
 
-        if (planos.isEmpty()) {
-            model.addAttribute("mensagem", "Não há plano cadastrado.");
+    // 🔹 Processa login e armazena ID na sessão
+    @PostMapping("/login")
+    public String login(@RequestParam String email, @RequestParam String senha, Model model, HttpSession session) {
+        UsuarioPacienteDTO usuario = usuarioPacienteService.authenticateUser(email, senha);
+
+        if (usuario != null) {
+            session.setAttribute("usuarioLogadoId", usuario.getPacienteId());
+            System.out.println("✅ Login bem-sucedido! Redirecionando para home...");
+            return "redirect:/home";
         } else {
-            model.addAttribute("planos", planos);
+
+            model.addAttribute("error", "Credenciais inválidas");
+            return "auth/login";
+        }
+    }
+
+
+    @GetMapping("/home")
+    public String showHomePage(HttpSession session, Model model) {
+        Long usuarioId = getUsuarioLogadoId(session);
+
+
+        if (usuarioId == null) {
+            return "redirect:/login";
         }
 
-        return "home";
+        List<PlanoDTO> planos = planoService.getPlanosByUsuarioId(usuarioId);
+        model.addAttribute("planos", planos);
+        model.addAttribute("mensagem", planos.isEmpty() ? "Não há plano cadastrado." : "");
+
+        return "auth/home";
     }
 
 
-    private Long getUsuarioLogadoId() {
-        // Aqui você pode implementar a lógica para pegar o ID do usuário logado.
-        return 1L;  // Exemplo fictício
-    }
-
-
-
-    // Exibe a página de cadastro de usuário
+    // 🔹 Exibe formulário de cadastro
     @GetMapping("/cadastro")
     public String showCadastroForm(Model model) {
         model.addAttribute("usuario", new UsuarioPacienteDTO());
-        return "cadastro";
+        return "auth/cadastro";
     }
 
+
+    // 🔹 Processa cadastro de novo usuário
     @PostMapping("/cadastro")
     public String cadastrarUsuario(@ModelAttribute("usuario") UsuarioPacienteDTO usuarioPacienteDTO, BindingResult bindingResult) {
-        // Verificar se há erros de validação
         if (bindingResult.hasErrors()) {
-            // Logando erros
-            bindingResult.getAllErrors().forEach(error -> {
-                System.out.println("Erro: " + error.getDefaultMessage());
-            });
-            return "cadastro";  // Retorna para o formulário se houver erro
+            return "auth/cadastro";
         }
-
-        // Log para ver os dados recebidos
-        System.out.println("Dados recebidos: " + usuarioPacienteDTO);
 
         try {
             usuarioPacienteService.createUsuario(usuarioPacienteDTO);
         } catch (Exception e) {
-            // Logando erro no serviço
-            System.out.println("Erro ao salvar no banco: " + e.getMessage());
-            return "cadastro";  // Retorna para o formulário se ocorrer algum erro ao salvar
+            return "auth/cadastro";
         }
 
-        // Redireciona para a página de login após sucesso
+        return "redirect:/login"; // Corrigido para um caminho absoluto
+    }
+
+
+    // 🔹 Exibe formulário de edição do usuário logado
+    @GetMapping("/editar/{id}")
+    public String showEditForm(HttpSession session, Model model) {
+        Long usuarioId = getUsuarioLogadoId(session);
+        System.out.println("Usuário logado ID: " + usuarioId);
+
+        if (usuarioId == null) {
+            return "redirect:auth/login";
+        }
+
+        UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
+        model.addAttribute("usuario", usuario);
+        return "usuario-paciente/editar-usuario";
+    }
+
+    // 🔹 Atualiza o usuário logado
+    @PutMapping("/editar/{id}")
+    public String updateUsuario(@PathVariable Long id, @Valid @ModelAttribute("usuario") UsuarioPacienteDTO usuario, BindingResult bindingResult, HttpSession session, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "usuario-paciente/editar-usuario"; // Se houver erros, retorne para o formulário de edição
+        }
+
+        Long usuarioId = getUsuarioLogadoId(session);
+        if (!usuarioId.equals(id)) {
+            return "redirect:auth/home";  // Redireciona caso a edição não seja para o usuário logado
+        }
+
+        // Atualiza o usuário no banco de dados
+        usuarioPacienteService.updateUsuario(id, usuario);
+
+        model.addAttribute("successMessage", "Perfil atualizado com sucesso!");
+
+        // Redireciona para a página de perfil ou home
+        return "redirect:auth/home"; // Ou poderia ser "redirect:/editar/{id}" se quiser mostrar o perfil editado
+    }
+
+
+
+
+    // 🔹 Exclui o usuário logado
+    @PostMapping("/deletar")
+    public String deleteUsuario(HttpSession session) {
+        Long usuarioId = getUsuarioLogadoId(session);
+
+        if (usuarioId != null) {
+            usuarioPacienteService.deleteUsuario(usuarioId);
+            session.invalidate(); // Remove a sessão após a exclusão
+        }
+
+        return "redirect:auth/cadastro";
+    }
+
+    // 🔹 Logout: Remove a sessão do usuário
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Invalida a sessão
         return "redirect:/login";
     }
-
-
-
-    // Exibe a página de editar usuário
-    @GetMapping("/editar/{id}")
-    public String showEditForm(@PathVariable("id") Long id, Model model) {
-        UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(id);
-        model.addAttribute("usuario", usuario);
-        return "editar-usuario";
-    }
-
-    @PostMapping("/editar/{id}")
-    public String updateUsuario(@PathVariable("id") Long id, @Valid @ModelAttribute("usuario") UsuarioPacienteDTO usuario, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "editar-usuario";
-        }
-
-        usuarioPacienteService.updateUsuario(id, usuario);
-        return "redirect:/home";
-    }
-
-    // Exclui o usuário
-    @PostMapping("/deletar/{id}")
-    public String deleteUsuario(@PathVariable("id") Long id) {
-        usuarioPacienteService.deleteUsuario(id);
-        return "redirect:/cadastro";  // Redireciona para a tela de cadastro após a exclusão
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "login";
-    }
-
-    // Processa o login
-    @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String senha, Model model) {
-        UsuarioPacienteDTO usuario = usuarioPacienteService.authenticateUser(email, senha);
-
-        if (usuario != null) {
-            // Se as credenciais estiverem corretas, redireciona para a home
-            return "redirect:/home";
-        } else {
-            // Se não encontrar o usuário ou a senha estiver errada, exibe um erro
-            model.addAttribute("error", "Credenciais inválidas");
-            return "login"; // Retorna para o formulário de login com erro
-        }
-    }
-
 }

@@ -2,11 +2,13 @@ package com.example.SmartoothAI.controller;
 
 import com.example.SmartoothAI.dto.PlanoDTO;
 import com.example.SmartoothAI.services.PlanoService;
-import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/planos")
@@ -15,40 +17,83 @@ public class PlanoController {
 
     private final PlanoService planoService;
 
+    // 🔹 Método para obter o ID do paciente logado da sessão
+    private Long getUsuarioLogadoId(HttpSession session) {
+        Object usuarioId = session.getAttribute("usuarioLogadoId");
+        if (usuarioId instanceof Long) {
+            return (Long) usuarioId;
+        }
+        return null;
+    }
+
     @GetMapping("/cadastro")
-    public String showCadastroForm(Model model) {
-        model.addAttribute("planoDTO", new PlanoDTO());
-        return "cadastro-plano";
+    public String showCadastroForm(Model model, HttpSession session) {
+        // 🔹 Recupera o ID do paciente logado da sessão
+        Long usuarioId = getUsuarioLogadoId(session);
+        if (usuarioId == null) {
+            return "redirect:/login"; // Redireciona se o paciente não estiver logado
+        }
+
+        // 🔹 Cria o PlanoDTO e associa o ID do paciente
+        PlanoDTO planoDTO = new PlanoDTO();
+        planoDTO.setUsuarioPacienteId(usuarioId); // Associa automaticamente o ID do paciente
+
+        model.addAttribute("planoDTO", planoDTO); // Envia o planoDTO para o modelo
+        return "plano/cadastro-plano"; // Retorna a página do formulário de cadastro
     }
 
     @PostMapping("/cadastro")
-    public String createPlano(@ModelAttribute("planoDTO") PlanoDTO planoDTO) {
-        planoService.createPlano(planoDTO);
-        return "redirect:/home";
+    public String createPlano(@ModelAttribute("planoDTO") PlanoDTO planoDTO, HttpSession session) {
+        Long usuarioId = getUsuarioLogadoId(session);
+        if (usuarioId == null) {
+            return "redirect:/login"; // Redireciona para login se o usuário não estiver logado
+        }
+
+        planoDTO.setUsuarioPacienteId(usuarioId); // Associa automaticamente o ID do usuário logado
+        planoService.createPlano(planoDTO); // Chama o serviço para salvar o plano
+
+        return "redirect:/home"; // Redireciona para a página inicial
     }
+
+
 
 
     @GetMapping("/{id}/editar")
     public String showEditForm(@PathVariable Long id, Model model) {
         PlanoDTO planoDTO = planoService.getPlanoById(id);
-        if (planoDTO != null) {
-            model.addAttribute("planoDTO", planoDTO);
-            return "editar-plano";
+
+        // Verificar se o planoDTO é null
+        if (planoDTO == null) {
+            System.out.println("Plano não encontrado com o ID: " + id);
+            return "redirect:/home";
         }
-        return "redirect:/home";
+
+        model.addAttribute("planoDTO", planoDTO);
+        return "plano/editar-plano";
     }
 
-    @PostMapping("/{id}/editar")
-    public String updatePlano(@PathVariable Long id, @ModelAttribute("planoDTO") PlanoDTO planoDTO) {
+
+    @PutMapping("/{id}/editar")
+    public String updatePlano(@PathVariable Long id, @ModelAttribute("planoDTO") PlanoDTO planoDTO, HttpSession session) {
+        Long usuarioId = getUsuarioLogadoId(session);
+        if (usuarioId == null) {
+            return "redirect:/login";
+        }
+
+        planoDTO.setUsuarioPacienteId(usuarioId);
         planoService.updatePlano(id, planoDTO);
+
         return "redirect:/home";
     }
 
-    @GetMapping("/{id}/excluir")
+
+
+
+    @DeleteMapping("/{id}/excluir")
     public String deletePlano(@PathVariable Long id) {
         planoService.deletePlano(id);
         return "redirect:/home";
     }
+
+
 }
-
-

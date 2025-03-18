@@ -79,6 +79,7 @@ public class PlanoService {
         planoRepository.deleteById(id); // Exclui o plano
     }
 
+
     public List<PlanoDTO> getAllPlanos() {
         List<Plano> planos = planoRepository.findAll();
         return planos.stream().map(plano -> {
@@ -93,8 +94,9 @@ public class PlanoService {
         }).toList();
     }
 
+
     public List<PlanoDTO> getPlanosByUsuarioId(Long usuarioId) {
-        // Verifique se o método findByUsuarioPacienteId está correto no repositório
+        // Verifique se o método findByUsuarioPacienteID está correto no repositório
         List<Plano> planos = planoRepository. findByUsuarioPaciente_PacienteId(usuarioId);
 
         // Convertendo a lista de planos em DTOs

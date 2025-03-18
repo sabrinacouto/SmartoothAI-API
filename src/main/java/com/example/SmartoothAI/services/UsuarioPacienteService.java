@@ -72,6 +72,7 @@ public class UsuarioPacienteService {
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
+        // Atualiza todos os campos do usuário
         usuarioPaciente.setNome(usuarioPacienteDTO.getNome());
         usuarioPaciente.setSobrenome(usuarioPacienteDTO.getSobrenome());
         usuarioPaciente.setEmail(usuarioPacienteDTO.getEmail());
@@ -89,7 +90,11 @@ public class UsuarioPacienteService {
         usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
 
         usuarioPacienteRepository.save(usuarioPaciente);
+        usuarioPacienteRepository.flush();
+
+        System.out.println("Usuário atualizado: " + usuarioPaciente);
     }
+
 
     public List<UsuarioPacienteDTO> getAllUsuarios() {
         return usuarioPacienteRepository.findAll().stream()
