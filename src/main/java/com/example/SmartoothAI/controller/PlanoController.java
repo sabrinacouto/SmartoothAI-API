@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @Controller
 @RequestMapping("/planos")
 @RequiredArgsConstructor
@@ -37,10 +39,11 @@ public class PlanoController {
         // 🔹 Cria o PlanoDTO e associa o ID do paciente
         PlanoDTO planoDTO = new PlanoDTO();
         planoDTO.setUsuarioPacienteId(usuarioId); // Associa automaticamente o ID do paciente
-
+        model.addAttribute("tiposPlano", Arrays.asList("Básico", "Premium", "Executivo"));  // Se necessário para o select
         model.addAttribute("planoDTO", planoDTO); // Envia o planoDTO para o modelo
         return "plano/cadastro-plano"; // Retorna a página do formulário de cadastro
     }
+
 
     @PostMapping("/cadastro")
     public String createPlano(@ModelAttribute("planoDTO") PlanoDTO planoDTO, HttpSession session) {
@@ -67,7 +70,7 @@ public class PlanoController {
             System.out.println("Plano não encontrado com o ID: " + id);
             return "redirect:/home";
         }
-
+        model.addAttribute("tiposPlano", Arrays.asList("Básico", "Premium", "Executivo"));
         model.addAttribute("planoDTO", planoDTO);
         return "plano/editar-plano"; // Retorna o formulário de edição
     }

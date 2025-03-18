@@ -7,25 +7,30 @@
 <body>
 <h1>Editar Plano</h1>
 
-<form th:action="@{/planos/{id}/editar(id=${planoDTO.planoId})}" method="post">
-    <!-- Indica que a requisição deve ser tratada como PUT -->
-    <input type="hidden" name="_method" value="put">
-
-    <input type="hidden" th:value="${planoDTO.planoId}" />
-
-    <label >Tipo do Plano:</label>
-    <input type="text" th:field="*{tipoPlano}" required>
+<form th:action="@{/planos/{id}/editar(id=${planoDTO.planoId})}" th:object="${planoDTO}" method="post">
+    <input type="hidden" name="_method" value="put"/> <!-- Simula o método PUT -->
 
     <label>Descrição:</label>
-    <input type="text" id="descricao" th:field="*{descricao}" required><br>
+    <input type="text" th:field="*{descricao}" required>
+    <br>
 
-    <label>Marca:</label>
-    <input type="text" id="marcaPlano" th:field="*{marcaPlano}" required><br>
+    <label>Tipo do Plano:</label>
+    <select th:field="*{tipoPlano}" required>
+        <option value="" disabled selected>Selecione o Tipo de Plano</option>
+        <option th:each="tipo : ${tiposPlano}" th:value="${tipo}" th:text="${tipo}"></option>
+    </select>
+    <br>
+
+    <label>Marca do Plano:</label>
+    <input type="text" th:field="*{marcaPlano}" required>
+    <br>
 
     <label>Tipo de Pagamento:</label>
-    <input type="text" id="tipoPagamento" th:field="*{tipoPagamento}" required><br>
+    <input type="text" th:field="*{tipoPagamento}" required>
+    <br>
 
     <button type="submit">Salvar</button>
 </form>
+
 </body>
 </html>

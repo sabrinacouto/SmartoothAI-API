@@ -12,15 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Controller
-@RequestMapping()
+@RequestMapping("/usuario")
 @RequiredArgsConstructor
 public class UsuarioPacienteController {
 
     private final UsuarioPacienteService usuarioPacienteService;
-    private final PlanoService planoService;
 
     // 🔹 Obtém o ID do usuário logado
     private Long getUsuarioLogadoId(HttpSession session) {
@@ -30,48 +28,6 @@ public class UsuarioPacienteController {
             return (Long) usuarioId;
         }
         return null;
-    }
-
-
-    // 🔹 Exibe formulário de login
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "auth/login";
-    }
-
-    // 🔹 Processa login e armazena ID na sessão
-    @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String senha, Model model, HttpSession session) {
-        UsuarioPacienteDTO usuario = usuarioPacienteService.authenticateUser(email, senha);
-
-        if (usuario != null) {
-            session.setAttribute("usuarioLogadoId", usuario.getPacienteId());
-            System.out.println("✅ Login bem-sucedido! ID do usuário: " + usuario.getPacienteId());
-            return "redirect:/home";
-        } else {
-            model.addAttribute("error", "Credenciais inválidas");
-            return "auth/login";
-        }
-    }
-
-
-
-    @GetMapping("/home")
-    public String showHomePage(HttpSession session, Model model) {
-        Long usuarioId = getUsuarioLogadoId(session);
-
-        if (usuarioId != null) {
-            UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
-            model.addAttribute("usuario", usuario);
-        } else {
-            model.addAttribute("erro", "Usuário não logado.");
-        }
-
-        List<PlanoDTO> planos = planoService.getPlanosByUsuarioId(usuarioId);
-        model.addAttribute("planos", planos);
-        model.addAttribute("mensagem", planos.isEmpty() ? "Não há plano cadastrado." : "");
-
-        return "auth/home";
     }
 
 
@@ -96,9 +52,8 @@ public class UsuarioPacienteController {
             return "auth/cadastro";
         }
 
-        return "redirect:/login"; // Corrigido para um caminho absoluto
+        return "redirect:/login";
     }
-
 
 
     @GetMapping("/editarUsuario/{id}")
@@ -135,30 +90,26 @@ public class UsuarioPacienteController {
             usuarioPacienteService.updateUsuario(id, usuarioPacienteDTO);
             return "redirect:/home";  // Após editar, redireciona para a página de home
         } catch (Exception e) {
-            // Se houver erro, exibe mensagem de erro
             return "usuario-paciente/editar-usuario";
         }
     }
 
-
-
     // 🔹 Exclui o usuário logado
-    @DeleteMapping("/deletarUsuario/{id}")
+    @RequestMapping(value = "/deletarUsuario/{id}", method = RequestMethod.DELETE)
     public String deleteUsuario(HttpSession session) {
         Long usuarioId = getUsuarioLogadoId(session);
 
         if (usuarioId != null) {
             usuarioPacienteService.deleteUsuario(usuarioId);
-            session.invalidate(); // Remove a sessão após a exclusão
+            session.invalidate();
         }
-
-        return "redirect:/cadastro";
+        return "redirect:/";
     }
 
     // 🔹 Logout: Remove a sessão do usuário
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // Invalida a sessão
+        session.invalidate();
         return "redirect:/login";
     }
 }

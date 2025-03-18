@@ -6,19 +6,27 @@
 <body>
 <h1>Cadastrar Plano</h1>
 <form th:action="@{/planos/cadastro}" th:object="${planoDTO}" method="post">
-    <label >Descrição:</label>
+    <label>Descrição:</label>
     <input type="text" th:field="*{descricao}" required>
     <br>
-    <label >Tipo do Plano:</label>
-    <input type="text" th:field="*{tipoPlano}" required>
+
+    <label>Tipo do Plano:</label>
+    <!-- Campo select para tipoPlano -->
+    <select th:field="*{tipoPlano}" required>
+        <option value="" disabled selected>Selecione o Tipo de Plano</option>
+        <!-- Opções para o tipoPlano -->
+        <option th:each="tipo : ${tiposPlano}" th:value="${tipo}" th:text="${tipo}"></option>
+    </select>
     <br>
-    <label >Marca do Plano:</label>
+
+    <label>Marca do Plano:</label>
     <input type="text" th:field="*{marcaPlano}" required>
     <br>
-    <label >Tipo de Pagamento:</label>
+
+    <label>Tipo de Pagamento:</label>
     <input type="text" th:field="*{tipoPagamento}" required>
     <br>
-    <br>
+
     <button type="submit">Cadastrar</button>
 </form>
 </body>

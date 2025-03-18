@@ -10,5 +10,7 @@ import java.util.List;
 public interface PlanoRepository extends JpaRepository<Plano, Long> {
 
     List<Plano> findByUsuarioPaciente_PacienteId(Long pacienteId);;
+
+    boolean existsByUsuarioPaciente_PacienteId(Long pacienteId);
 }
 

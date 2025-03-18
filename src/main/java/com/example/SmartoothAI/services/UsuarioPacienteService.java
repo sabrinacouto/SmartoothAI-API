@@ -4,6 +4,7 @@ import com.example.SmartoothAI.dto.UsuarioPacienteDTO;
 import com.example.SmartoothAI.exceptions.EmailAlreadyExistsException;
 import com.example.SmartoothAI.exceptions.ResourceNotFoundException;
 import com.example.SmartoothAI.model.UsuarioPaciente;
+import com.example.SmartoothAI.repository.PlanoRepository;
 import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class UsuarioPacienteService {
 
     private final UsuarioPacienteRepository usuarioPacienteRepository;
+    private final PlanoRepository planoRepository;
 
 
     private UsuarioPacienteDTO convertToDTO(UsuarioPaciente usuarioPaciente) {
@@ -130,6 +132,10 @@ public class UsuarioPacienteService {
         usuarioPacienteRepository.save(usuarioPaciente);
 
         System.out.println("Usuário atualizado: " + usuarioPaciente);
+    }
+
+    public boolean checkUsuarioTemPlanos(Long id) {
+        return planoRepository.existsByUsuarioPaciente_PacienteId(id);
     }
 
 

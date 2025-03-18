@@ -6,7 +6,7 @@
 <body>
 <h1>Editar Perfil</h1>
 
-<form th:action="@{/editarUsuario/{id}(id=${usuario.pacienteId})}" th:object="${usuario}" method="post">
+<form th:action="@{/usuario/editarUsuario/{id}(id=${usuario.pacienteId})}" th:object="${usuario}" method="post">
     <input type="hidden" name="_method" value="patch" />
 
     <label for="nome">Nome:</label>
@@ -30,7 +30,7 @@
     <button type="submit">Salvar alterações</button>
 </form>
 
-<form th:action="@{/deletarUsuario/{id}(id=${usuario.pacienteId})}" method="post"
+<form th:action="@{/usuario/deletarUsuario/{id}(id=${usuario.pacienteId})}" method="post"
     onsubmit="return confirm('Tem certeza que deseja excluir?');">
     <input type="hidden" name="_method" value="delete" />
     <button type="submit">Excluir conta</button>
