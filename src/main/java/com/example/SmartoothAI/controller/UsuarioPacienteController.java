@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping()
 @RequiredArgsConstructor
 public class UsuarioPacienteController {
 
@@ -25,10 +26,12 @@ public class UsuarioPacienteController {
     private Long getUsuarioLogadoId(HttpSession session) {
         Object usuarioId = session.getAttribute("usuarioLogadoId");
         if (usuarioId instanceof Long) {
+            System.out.println("ID do usuário logado: " + usuarioId);  // Adicionando log
             return (Long) usuarioId;
         }
         return null;
     }
+
 
     // 🔹 Exibe formulário de login
     @GetMapping("/login")
@@ -43,23 +46,25 @@ public class UsuarioPacienteController {
 
         if (usuario != null) {
             session.setAttribute("usuarioLogadoId", usuario.getPacienteId());
-            System.out.println("✅ Login bem-sucedido! Redirecionando para home...");
+            System.out.println("✅ Login bem-sucedido! ID do usuário: " + usuario.getPacienteId());
             return "redirect:/home";
         } else {
-
             model.addAttribute("error", "Credenciais inválidas");
             return "auth/login";
         }
     }
 
 
+
     @GetMapping("/home")
     public String showHomePage(HttpSession session, Model model) {
         Long usuarioId = getUsuarioLogadoId(session);
 
-
-        if (usuarioId == null) {
-            return "redirect:/login";
+        if (usuarioId != null) {
+            UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
+            model.addAttribute("usuario", usuario);
+        } else {
+            model.addAttribute("erro", "Usuário não logado.");
         }
 
         List<PlanoDTO> planos = planoService.getPlanosByUsuarioId(usuarioId);
@@ -95,48 +100,50 @@ public class UsuarioPacienteController {
     }
 
 
-    // 🔹 Exibe formulário de edição do usuário logado
-    @GetMapping("/editar/{id}")
-    public String showEditForm(HttpSession session, Model model) {
-        Long usuarioId = getUsuarioLogadoId(session);
-        System.out.println("Usuário logado ID: " + usuarioId);
 
-        if (usuarioId == null) {
-            return "redirect:auth/login";
+    @GetMapping("/editarUsuario/{id}")
+    public String showEditForm(@PathVariable Long id, HttpSession session, Model model) {
+        Long usuarioId = getUsuarioLogadoId(session);
+        if (usuarioId != null) {
+            UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
+            model.addAttribute("usuario", usuario);
+        } else {
+            model.addAttribute("erro", "Usuário não logado.");
         }
 
-        UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
+        UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(id);
+        if (usuario == null) {
+            return "redirect:/login"; // Ou qualquer outra lógica para lidar com a falha
+        }
         model.addAttribute("usuario", usuario);
-        return "usuario-paciente/editar-usuario";
+        return "usuario-paciente/editar-usuario"; // Caminho correto para o template
     }
+
 
     // 🔹 Atualiza o usuário logado
-    @PutMapping("/editar/{id}")
-    public String updateUsuario(@PathVariable Long id, @Valid @ModelAttribute("usuario") UsuarioPacienteDTO usuario, BindingResult bindingResult, HttpSession session, Model model) {
 
-        if (bindingResult.hasErrors()) {
-            return "usuario-paciente/editar-usuario"; // Se houver erros, retorne para o formulário de edição
-        }
-
+    @RequestMapping(value = "/editarUsuario/{id}", method = RequestMethod.PATCH)
+    public String editarUsuario(@PathVariable("id") Long id, UsuarioPacienteDTO usuarioPacienteDTO, Model model, HttpSession session ) {
         Long usuarioId = getUsuarioLogadoId(session);
-        if (!usuarioId.equals(id)) {
-            return "redirect:auth/home";  // Redireciona caso a edição não seja para o usuário logado
+        if (usuarioId != null) {
+            UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
+            model.addAttribute("usuario", usuario);
+        } else {
+            model.addAttribute("erro", "Usuário não logado.");
         }
-
-        // Atualiza o usuário no banco de dados
-        usuarioPacienteService.updateUsuario(id, usuario);
-
-        model.addAttribute("successMessage", "Perfil atualizado com sucesso!");
-
-        // Redireciona para a página de perfil ou home
-        return "redirect:auth/home"; // Ou poderia ser "redirect:/editar/{id}" se quiser mostrar o perfil editado
+        try {
+            usuarioPacienteService.updateUsuario(id, usuarioPacienteDTO);
+            return "redirect:/home";  // Após editar, redireciona para a página de home
+        } catch (Exception e) {
+            // Se houver erro, exibe mensagem de erro
+            return "usuario-paciente/editar-usuario";
+        }
     }
-
 
 
 
     // 🔹 Exclui o usuário logado
-    @PostMapping("/deletar")
+    @DeleteMapping("/deletarUsuario/{id}")
     public String deleteUsuario(HttpSession session) {
         Long usuarioId = getUsuarioLogadoId(session);
 
@@ -145,7 +152,7 @@ public class UsuarioPacienteController {
             session.invalidate(); // Remove a sessão após a exclusão
         }
 
-        return "redirect:auth/cadastro";
+        return "redirect:/cadastro";
     }
 
     // 🔹 Logout: Remove a sessão do usuário

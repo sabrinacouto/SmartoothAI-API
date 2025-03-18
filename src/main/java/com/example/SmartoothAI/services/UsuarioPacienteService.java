@@ -69,31 +69,69 @@ public class UsuarioPacienteService {
 
     @Transactional
     public void updateUsuario(Long id, UsuarioPacienteDTO usuarioPacienteDTO) {
+        // Obtém o usuário atual do banco
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
-        // Atualiza todos os campos do usuário
-        usuarioPaciente.setNome(usuarioPacienteDTO.getNome());
-        usuarioPaciente.setSobrenome(usuarioPacienteDTO.getSobrenome());
-        usuarioPaciente.setEmail(usuarioPacienteDTO.getEmail());
-        usuarioPaciente.setDataNasc(usuarioPacienteDTO.getDataNasc());
-        usuarioPaciente.setGenero(usuarioPacienteDTO.getGenero());
-        usuarioPaciente.setCep(usuarioPacienteDTO.getCep());
-        usuarioPaciente.setLogradouro(usuarioPacienteDTO.getLogradouro());
-        usuarioPaciente.setNumero(usuarioPacienteDTO.getNumero());
-        usuarioPaciente.setComplemento(usuarioPacienteDTO.getComplemento());
-        usuarioPaciente.setBairro(usuarioPacienteDTO.getBairro());
-        usuarioPaciente.setCidade(usuarioPacienteDTO.getCidade());
-        usuarioPaciente.setUf(usuarioPacienteDTO.getUf());
-        usuarioPaciente.setContato(usuarioPacienteDTO.getContato());
-        usuarioPaciente.setDescontos(usuarioPacienteDTO.getDescontos());
-        usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
+        // Verifica se o e-mail foi alterado e se o novo e-mail já existe
+        if (!usuarioPaciente.getEmail().equals(usuarioPacienteDTO.getEmail()) &&
+                usuarioPacienteRepository.findByEmail(usuarioPacienteDTO.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("Já existe um usuário com este e-mail.");
+        }
 
+        // Atualiza os campos, mas somente se o valor tiver sido alterado
+        if (usuarioPacienteDTO.getNome() != null && !usuarioPacienteDTO.getNome().equals(usuarioPaciente.getNome())) {
+            usuarioPaciente.setNome(usuarioPacienteDTO.getNome());
+        }
+        if (usuarioPacienteDTO.getSobrenome() != null && !usuarioPacienteDTO.getSobrenome().equals(usuarioPaciente.getSobrenome())) {
+            usuarioPaciente.setSobrenome(usuarioPacienteDTO.getSobrenome());
+        }
+        if (usuarioPacienteDTO.getEmail() != null && !usuarioPacienteDTO.getEmail().equals(usuarioPaciente.getEmail())) {
+            usuarioPaciente.setEmail(usuarioPacienteDTO.getEmail());
+        }
+        if (usuarioPacienteDTO.getDataNasc() != null && !usuarioPacienteDTO.getDataNasc().equals(usuarioPaciente.getDataNasc())) {
+            usuarioPaciente.setDataNasc(usuarioPacienteDTO.getDataNasc());
+        }
+        if (usuarioPacienteDTO.getGenero() != null && !usuarioPacienteDTO.getGenero().equals(usuarioPaciente.getGenero())) {
+            usuarioPaciente.setGenero(usuarioPacienteDTO.getGenero());
+        }
+        if (usuarioPacienteDTO.getCep() != null && !usuarioPacienteDTO.getCep().equals(usuarioPaciente.getCep())) {
+            usuarioPaciente.setCep(usuarioPacienteDTO.getCep());
+        }
+        if (usuarioPacienteDTO.getLogradouro() != null && !usuarioPacienteDTO.getLogradouro().equals(usuarioPaciente.getLogradouro())) {
+            usuarioPaciente.setLogradouro(usuarioPacienteDTO.getLogradouro());
+        }
+        if (usuarioPacienteDTO.getNumero() != null && !usuarioPacienteDTO.getNumero().equals(usuarioPaciente.getNumero())) {
+            usuarioPaciente.setNumero(usuarioPacienteDTO.getNumero());
+        }
+        if (usuarioPacienteDTO.getComplemento() != null && !usuarioPacienteDTO.getComplemento().equals(usuarioPaciente.getComplemento())) {
+            usuarioPaciente.setComplemento(usuarioPacienteDTO.getComplemento());
+        }
+        if (usuarioPacienteDTO.getBairro() != null && !usuarioPacienteDTO.getBairro().equals(usuarioPaciente.getBairro())) {
+            usuarioPaciente.setBairro(usuarioPacienteDTO.getBairro());
+        }
+        if (usuarioPacienteDTO.getCidade() != null && !usuarioPacienteDTO.getCidade().equals(usuarioPaciente.getCidade())) {
+            usuarioPaciente.setCidade(usuarioPacienteDTO.getCidade());
+        }
+        if (usuarioPacienteDTO.getUf() != null && !usuarioPacienteDTO.getUf().equals(usuarioPaciente.getUf())) {
+            usuarioPaciente.setUf(usuarioPacienteDTO.getUf());
+        }
+        if (usuarioPacienteDTO.getContato() != null && !usuarioPacienteDTO.getContato().equals(usuarioPaciente.getContato())) {
+            usuarioPaciente.setContato(usuarioPacienteDTO.getContato());
+        }
+        if (usuarioPacienteDTO.getDescontos() != null && !usuarioPacienteDTO.getDescontos().equals(usuarioPaciente.getDescontos())) {
+            usuarioPaciente.setDescontos(usuarioPacienteDTO.getDescontos());
+        }
+        if (usuarioPacienteDTO.getSenha() != null && !usuarioPacienteDTO.getSenha().equals(usuarioPaciente.getSenha())) {
+            usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
+        }
+
+        // Salva o usuário com os campos atualizados
         usuarioPacienteRepository.save(usuarioPaciente);
-        usuarioPacienteRepository.flush();
 
         System.out.println("Usuário atualizado: " + usuarioPaciente);
     }
+
 
 
     public List<UsuarioPacienteDTO> getAllUsuarios() {
@@ -121,16 +159,16 @@ public class UsuarioPacienteService {
         Optional<UsuarioPaciente> usuario = usuarioPacienteRepository.findByEmail(email);
 
         if (usuario.isPresent() && usuario.get().getSenha().equals(senha)) {
-            // Se o email existir e a senha for correta, retorna os dados do usuário
             UsuarioPaciente usuarioPaciente = usuario.get();
             UsuarioPacienteDTO usuarioDTO = new UsuarioPacienteDTO();
             usuarioDTO.setPacienteId(usuarioPaciente.getPacienteId());
             usuarioDTO.setNome(usuarioPaciente.getNome());
             usuarioDTO.setEmail(usuarioPaciente.getEmail());
-            // Adicione mais campos conforme necessário
+            // Adicionar mais campos conforme necessário
             return usuarioDTO;
         }
         return null;
     }
+
 
 }

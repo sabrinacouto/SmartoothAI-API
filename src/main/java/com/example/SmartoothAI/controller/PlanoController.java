@@ -69,8 +69,9 @@ public class PlanoController {
         }
 
         model.addAttribute("planoDTO", planoDTO);
-        return "plano/editar-plano";
+        return "plano/editar-plano"; // Retorna o formulário de edição
     }
+
 
 
     @PutMapping("/{id}/editar")
@@ -85,6 +86,7 @@ public class PlanoController {
 
         return "redirect:/home";
     }
+
 
 
 

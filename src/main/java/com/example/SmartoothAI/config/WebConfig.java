@@ -1,5 +1,6 @@
 package com.example.SmartoothAI.config;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
@@ -21,9 +22,15 @@ public class WebConfig {
         };
     }
 
+
     @Bean
-    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-        return new HiddenHttpMethodFilter();
+    public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
+        FilterRegistrationBean<HiddenHttpMethodFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new HiddenHttpMethodFilter());
+        registrationBean.addUrlPatterns("/editarUsuario/*");  // Adapte para sua URL
+        return registrationBean;
     }
+
 }
+
 

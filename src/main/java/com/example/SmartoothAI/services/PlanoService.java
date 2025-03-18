@@ -65,9 +65,8 @@ public class PlanoService {
                 planoAtualizado.setTipoPlano(planoDTO.getTipoPlano());
                 planoAtualizado.setMarcaPlano(planoDTO.getMarcaPlano());
                 planoAtualizado.setTipoPagamento(planoDTO.getTipoPagamento());
-                planoAtualizado.setUsuarioPaciente(usuarioPaciente.get()); // Atualiza o usuário paciente
-
-                planoRepository.save(planoAtualizado); // Atualiza o plano
+                planoAtualizado.setUsuarioPaciente(usuarioPaciente.get());
+                planoRepository.save(planoAtualizado);
             } else {
                 throw new IllegalArgumentException("Usuário paciente não encontrado.");
             }

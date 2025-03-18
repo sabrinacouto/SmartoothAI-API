@@ -10,7 +10,6 @@
 
 <form th:action="@{/cadastro}" method="post" th:object="${usuario}">
     <input type="hidden" th:field="*{pacienteId}">
-    <input type="hidden" th:field="*{planoId}" />
 
     <label>Nome:</label>
     <input type="text" th:field="*{nome}" required>
