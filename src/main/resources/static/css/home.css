@@ -1,4 +1,3 @@
-
         .planos-container {
             background-color: #fff;
             padding: 20px;
@@ -98,11 +97,6 @@
 
 .button-text {
     font-weight: bold;
-}
-
-.planos-container {
-    width: 100%;
-    text-align: left;
 }
 
 .button-group {

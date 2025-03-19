@@ -99,30 +99,30 @@
 .header-logout {
     display: flex;
     justify-content: space-between;
-    align-items: center;            /* Alinha os itens verticalmente */
-    padding: 10px 20px;             /* Adiciona espaçamento */
-    background-color: #fff;         /* Cor de fundo */
-    position: fixed;                /* Fixa o header no topo */
-    top: 0;                         /* Fixa no topo da página */
-    left: 0;                        /* Fixa na esquerda */
-    right: 0;                       /* Fixa na direita */
-    border-bottom: 2px solid #ccc;  /* Borda inferior */
-    z-index: 1000;                  /* Garante que o header fique acima do conteúdo */
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 2px solid #ccc;
+    z-index: 1000;
 }
 .left-buttons {
     display: flex;
     gap: 10px;
 }
 .left-buttons .btn {
-    padding: 8px 16px;           /* Tamanho do botão */
-    margin: 0 10px;              /* Espaçamento entre os botões */
-    font-size: 16px;             /* Tamanho da fonte */
-    color: #fff;                 /* Cor do texto */
-    background-color: #ffb275;  /* Cor de fundo */
-    border: none;                /* Remove a borda padrão */
-    border-radius: 25px;         /* Bordas arredondadas */
-    cursor: pointer;             /* Adiciona o cursor de pointer */
-    transition: all 0.3s ease;   /* Animação suave para hover */
+    padding: 8px 16px;
+    margin: 0 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #ffb27;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .left-buttons .btn:hover {
@@ -131,7 +131,6 @@
 }
 
 .title-header {
-    font-size: 20px;
     color: #333;
 }
 
