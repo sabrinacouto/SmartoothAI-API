@@ -45,7 +45,13 @@ public class UsuarioPacienteController {
 
         try {
             usuarioPacienteService.createUsuario(usuarioPacienteDTO);
+
+            model.addAttribute("success", "Usuário cadastrado com sucesso! Você já pode realizar o login.");
+
         } catch (EmailAlreadyExistsException e) {
+            model.addAttribute("error", e.getMessage());
+            return "auth/form-register";
+        } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return "auth/form-register";
         } catch (Exception e) {
@@ -53,8 +59,11 @@ public class UsuarioPacienteController {
             return "auth/form-register";
         }
 
-        return "redirect:/login";
+        return "auth/form-register";
     }
+
+
+
 
 
     @GetMapping("/editarUsuario/{id}")

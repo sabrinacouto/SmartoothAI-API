@@ -48,6 +48,10 @@ public class UsuarioPacienteService {
             throw new EmailAlreadyExistsException("Já existe um usuário com este e-mail.");
         }
 
+        if (usuarioPacienteDTO.getUf() != null && usuarioPacienteDTO.getUf().length() > 2) {
+            throw new IllegalArgumentException("O campo UF não pode ter mais que dois caracteres.");
+        }
+
         UsuarioPaciente usuarioPaciente = new UsuarioPaciente();
         usuarioPaciente.setNome(usuarioPacienteDTO.getNome());
         usuarioPaciente.setSobrenome(usuarioPacienteDTO.getSobrenome());
@@ -62,7 +66,6 @@ public class UsuarioPacienteService {
         usuarioPaciente.setCidade(usuarioPacienteDTO.getCidade());
         usuarioPaciente.setUf(usuarioPacienteDTO.getUf());
         usuarioPaciente.setContato(usuarioPacienteDTO.getContato());
-        usuarioPaciente.setDescontos(usuarioPacienteDTO.getDescontos());
         usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
 
         usuarioPacienteRepository.save(usuarioPaciente);
@@ -78,6 +81,10 @@ public class UsuarioPacienteService {
         if (!usuarioPaciente.getEmail().equals(usuarioPacienteDTO.getEmail()) &&
                 usuarioPacienteRepository.findByEmail(usuarioPacienteDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("Já existe um usuário com este e-mail.");
+        }
+
+        if (usuarioPacienteDTO.getUf() != null && usuarioPacienteDTO.getUf().length() > 2) {
+            throw new IllegalArgumentException("O campo UF não pode ter mais que dois caracteres.");
         }
         if (usuarioPacienteDTO.getNome() != null && !usuarioPacienteDTO.getNome().equals(usuarioPaciente.getNome())) {
             usuarioPaciente.setNome(usuarioPacienteDTO.getNome());

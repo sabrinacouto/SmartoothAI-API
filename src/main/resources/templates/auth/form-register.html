@@ -15,8 +15,12 @@
     <h2>Cadastro</h2>
 
     <form th:action="@{/usuario/cadastro}" method="post" th:object="${usuario}">
-        <div th:if="${error}" class="alert alert-danger">
+        <div th:if="${error}" class="alert-danger">
             <p th:text="${error}"></p>
+        </div>
+
+        <div th:if="${success}" class="alert-success">
+            <p th:text="${success}">Usuário cadastrado com sucesso! Você já pode realizar o login.</p>
         </div>
 
         <input type="hidden" th:field="*{pacienteId}">
@@ -88,11 +92,6 @@
         <div class="input-group">
             <label>Contato:</label>
             <input type="text" th:field="*{contato}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Descontos:</label>
-            <input type="number" step="0.01" th:field="*{descontos}">
         </div>
 
         <div class="input-group">

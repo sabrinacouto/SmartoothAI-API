@@ -10,6 +10,32 @@
   min-height: 90vh;
 }
 
+.alert-success {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert-danger p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 /* ----------- Header Logout -------------*/
 
 
