@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Editar Usuário</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Editar Perfil</title>
 </head>
 <body>
+
+<div th:replace="~{fragments :: header(${usuario})}"></div>
 <h1>Editar Perfil</h1>
 
 <form th:action="@{/usuario/editarUsuario/{id}(id=${usuario.pacienteId})}" th:object="${usuario}" method="post">
     <input type="hidden" name="_method" value="patch" />
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
 
     <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" th:value="${usuario.nome}" required /><br>

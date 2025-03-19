@@ -2,6 +2,7 @@ package com.example.SmartoothAI.controller;
 
 import com.example.SmartoothAI.dto.PlanoDTO;
 import com.example.SmartoothAI.dto.UsuarioPacienteDTO;
+import com.example.SmartoothAI.exceptions.EmailAlreadyExistsException;
 import com.example.SmartoothAI.services.PlanoService;
 import com.example.SmartoothAI.services.UsuarioPacienteService;
 import jakarta.servlet.http.HttpSession;
@@ -20,18 +21,15 @@ public class UsuarioPacienteController {
 
     private final UsuarioPacienteService usuarioPacienteService;
 
-    // 🔹 Obtém o ID do usuário logado
     private Long getUsuarioLogadoId(HttpSession session) {
         Object usuarioId = session.getAttribute("usuarioLogadoId");
         if (usuarioId instanceof Long) {
-            System.out.println("ID do usuário logado: " + usuarioId);  // Adicionando log
             return (Long) usuarioId;
         }
         return null;
     }
 
 
-    // 🔹 Exibe formulário de cadastro
     @GetMapping("/cadastro")
     public String showCadastroForm(Model model) {
         model.addAttribute("usuario", new UsuarioPacienteDTO());
@@ -39,16 +37,19 @@ public class UsuarioPacienteController {
     }
 
 
-    // 🔹 Processa cadastro de novo usuário
     @PostMapping("/cadastro")
-    public String cadastrarUsuario(@ModelAttribute("usuario") UsuarioPacienteDTO usuarioPacienteDTO, BindingResult bindingResult) {
+    public String cadastrarUsuario(@ModelAttribute("usuario") UsuarioPacienteDTO usuarioPacienteDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "auth/cadastro";
         }
 
         try {
             usuarioPacienteService.createUsuario(usuarioPacienteDTO);
+        } catch (EmailAlreadyExistsException e) {
+            model.addAttribute("error", e.getMessage());
+            return "auth/cadastro";
         } catch (Exception e) {
+            model.addAttribute("error", "Erro inesperado. Tente novamente mais tarde.");
             return "auth/cadastro";
         }
 
@@ -68,19 +69,18 @@ public class UsuarioPacienteController {
 
         UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(id);
         if (usuario == null) {
-            return "redirect:/login"; // Ou qualquer outra lógica para lidar com a falha
+            return "redirect:/login";
         }
         model.addAttribute("usuario", usuario);
-        return "usuario-paciente/editar-usuario"; // Caminho correto para o template
+        return "usuario-paciente/editar-usuario";
     }
 
-
-    // 🔹 Atualiza o usuário logado
 
     @RequestMapping(value = "/editarUsuario/{id}", method = RequestMethod.PATCH)
     public String editarUsuario(@PathVariable("id") Long id, UsuarioPacienteDTO usuarioPacienteDTO, Model model, HttpSession session ) {
         Long usuarioId = getUsuarioLogadoId(session);
         if (usuarioId != null) {
+
             UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
             model.addAttribute("usuario", usuario);
         } else {
@@ -88,25 +88,39 @@ public class UsuarioPacienteController {
         }
         try {
             usuarioPacienteService.updateUsuario(id, usuarioPacienteDTO);
-            return "redirect:/home";  // Após editar, redireciona para a página de home
+            return "redirect:/home";
+        } catch (EmailAlreadyExistsException e) {
+            model.addAttribute("error", e.getMessage());
+            return "usuario-paciente/editar-usuario";
         } catch (Exception e) {
+            model.addAttribute("error", "Erro inesperado. Tente novamente mais tarde.");
             return "usuario-paciente/editar-usuario";
         }
     }
 
-    // 🔹 Exclui o usuário logado
     @RequestMapping(value = "/deletarUsuario/{id}", method = RequestMethod.DELETE)
-    public String deleteUsuario(HttpSession session) {
+    public String deleteUsuario(@PathVariable("id") Long id, HttpSession session, Model model) {
         Long usuarioId = getUsuarioLogadoId(session);
 
         if (usuarioId != null) {
+            UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
+            model.addAttribute("usuario", usuario);
+
+            if (usuarioPacienteService.checkUsuarioTemPlanos(usuarioId)) {
+                model.addAttribute("error", "Você não pode excluir sua conta enquanto tiver planos cadastrados. Exclua seus planos primeiro.");
+                return "usuario-paciente/editar-usuario";
+            }
+
+            // Se não tiver planos cadastrados, exclui o usuário
             usuarioPacienteService.deleteUsuario(usuarioId);
-            session.invalidate();
+            session.invalidate(); // Invalida a sessão do usuário
+        } else {
+            // Se o usuário não estiver logado, exibe uma mensagem de erro
+            model.addAttribute("error", "Usuário não logado.");
         }
         return "redirect:/";
     }
 
-    // 🔹 Logout: Remove a sessão do usuário
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
