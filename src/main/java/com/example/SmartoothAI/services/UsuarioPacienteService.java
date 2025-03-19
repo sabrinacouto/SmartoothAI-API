@@ -129,7 +129,7 @@ public class UsuarioPacienteService {
 
     }
 
-    public boolean checkUsuarioTemPlanos(Long id) {
+    public boolean checkUsuarioHasPlans(Long id) {
         return planoRepository.existsByUsuarioPaciente_PacienteId(id);
     }
 

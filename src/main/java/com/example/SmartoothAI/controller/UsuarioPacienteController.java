@@ -33,24 +33,24 @@ public class UsuarioPacienteController {
     @GetMapping("/cadastro")
     public String showCadastroForm(Model model) {
         model.addAttribute("usuario", new UsuarioPacienteDTO());
-        return "auth/cadastro";
+        return "auth/form-register";
     }
 
 
     @PostMapping("/cadastro")
     public String cadastrarUsuario(@ModelAttribute("usuario") UsuarioPacienteDTO usuarioPacienteDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "auth/cadastro";
+            return "auth/form-register";
         }
 
         try {
             usuarioPacienteService.createUsuario(usuarioPacienteDTO);
         } catch (EmailAlreadyExistsException e) {
             model.addAttribute("error", e.getMessage());
-            return "auth/cadastro";
+            return "auth/form-register";
         } catch (Exception e) {
             model.addAttribute("error", "Erro inesperado. Tente novamente mais tarde.");
-            return "auth/cadastro";
+            return "auth/form-register";
         }
 
         return "redirect:/login";
@@ -106,7 +106,7 @@ public class UsuarioPacienteController {
             UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
             model.addAttribute("usuario", usuario);
 
-            if (usuarioPacienteService.checkUsuarioTemPlanos(usuarioId)) {
+            if (usuarioPacienteService.checkUsuarioHasPlans(usuarioId)) {
                 model.addAttribute("error", "Você não pode excluir sua conta enquanto tiver planos cadastrados. Exclua seus planos primeiro.");
                 return "usuario-paciente/editar-usuario";
             }
