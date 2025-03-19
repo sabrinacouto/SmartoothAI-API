@@ -38,6 +38,63 @@
 
 /* ----------- Header Logout -------------*/
 
+.header-login {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 2px solid #ccc;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.title-header {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.nav-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-menu li {
+    margin: 0;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.nav-menu a:hover {
+    color: #ffb275;
+}
+
+
+/* ----------- Header Logout -------------*/
+
 
 .header-logout {
     display: flex;
@@ -82,9 +139,6 @@
 
 /* -----------  Home -------------*/
 
-span{
-  color: #FFF500;
-}
 .section .title {
 	margin-bottom: 1rem;
 }

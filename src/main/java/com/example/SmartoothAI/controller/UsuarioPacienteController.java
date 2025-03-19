@@ -64,8 +64,6 @@ public class UsuarioPacienteController {
 
 
 
-
-
     @GetMapping("/editarUsuario/{id}")
     public String showEditForm(@PathVariable Long id, HttpSession session, Model model) {
         Long usuarioId = getUsuarioLogadoId(session);
@@ -120,11 +118,9 @@ public class UsuarioPacienteController {
                 return "usuario-paciente/editar-usuario";
             }
 
-            // Se não tiver planos cadastrados, exclui o usuário
             usuarioPacienteService.deleteUsuario(usuarioId);
-            session.invalidate(); // Invalida a sessão do usuário
+            session.invalidate();
         } else {
-            // Se o usuário não estiver logado, exibe uma mensagem de erro
             model.addAttribute("error", "Usuário não logado.");
         }
         return "redirect:/";

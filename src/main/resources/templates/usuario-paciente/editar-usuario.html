@@ -2,16 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/editar-usuario.css">
     <title>Editar Perfil</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header(${usuario})"></div>
 
-<div th:replace="~{fragments :: header(${usuario})}"></div>
+<div class ="container">
 <h1>Editar Perfil</h1>
 
+    <div class="form-box">
 <form th:action="@{/usuario/editarUsuario/{id}(id=${usuario.pacienteId})}" th:object="${usuario}" method="post">
     <input type="hidden" name="_method" value="patch" />
-    <div th:if="${error}" class="alert alert-danger">
+    <div th:if="${error}" class="alert-danger">
         <p th:text="${error}"></p>
     </div>
 
@@ -41,6 +44,8 @@
     <input type="hidden" name="_method" value="delete" />
     <button type="submit">Excluir conta</button>
 </form>
-
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

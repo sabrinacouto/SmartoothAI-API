@@ -4,6 +4,7 @@
     <title>Cadastrar Plano</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header(${usuario})"></div>
 <h1>Cadastrar Plano</h1>
 <form th:action="@{/planos/cadastro}" th:object="${planoDTO}" method="post">
     <label>Descrição:</label>

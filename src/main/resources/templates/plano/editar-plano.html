@@ -5,6 +5,7 @@
     <title>Editar Plano</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header(${usuario})"></div>
 <h1>Editar Plano</h1>
 
 <form th:action="@{/planos/{id}/editar(id=${planoDTO.planoId})}" th:object="${planoDTO}" method="post">
