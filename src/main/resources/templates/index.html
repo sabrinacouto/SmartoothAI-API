@@ -1,19 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Página Inicial</title>
+    <meta charset="UTF-8">
+    <title>Smartooth</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
+<div th:replace="~{fragments/header-logout :: header-logout}"></div>
+<div class="container">
+    <section class="section">
+        <div class="home">
+            <div class="text">
+                <div class="image">
+                    <img th:src="@{/assets/mascote.png}" alt="Mascote da Smartooth">
+                </div>
+                <div class="about">
+                <h1 class="title">
+                    Simplifique o cuidado odontológico com inteligência artificial
+                </h1>
+                <p>
+                    Nosso software utiliza IA para otimizar diagnósticos, agilizar processos e facilitar a rotina dos profissionais de saúde bucal, permitindo um atendimento mais preciso, eficiente e acessível.
+                </p>
+                    <a th:href="@{/usuario/cadastro}">
+                        <button class="botao">Clique aqui para saber mais</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<h1>Bem-vindo ao Smartooth AI</h1>
+    <section class="middle-section">
+        <div class="odonto-care">
+            <div class="text-black">
+                <div class="about-section-odonto">
+                    <h1 class="title-black">
+                        Simplifique o cuidado odontológico com inteligência artificial
+                    </h1>
+                    <p>
+                        Nosso software utiliza IA para otimizar diagnósticos, agilizar processos e facilitar a rotina dos profissionais de saúde bucal, permitindo um atendimento mais preciso, eficiente e acessível.
+                    </p>
+                </div>
+                <div class="image-section-odonto">
+                    <img th:src="@{/assets/home-img-odonto.png}" alt="Dentista com paciente">
+                </div>
+            </div>
+        </div>
+    </section>
 
-<a th:href="@{/login}">
-    <button>Login</button>
-</a>
 
-<a th:href="@{/usuario/cadastro}">
-    <button>Cadastro</button>
-</a>
+    <section class="section-about">
+        <div class="home-section">
+            <div class="text-center">
+                <div class="about">
+                    <h1 class="title">
+                        Simplifique o cuidado odontológico com inteligência artificial
+                    </h1>
+                    <p>
+                        Nosso software utiliza IA para otimizar diagnósticos, agilizar processos e facilitar a rotina dos profissionais de saúde bucal, permitindo um atendimento mais preciso, eficiente e acessível.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

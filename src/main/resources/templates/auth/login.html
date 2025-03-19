@@ -3,25 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/login.css">
     <title>Login</title>
 </head>
 <body>
-<h2>Login</h2>
-<form action="/login" method="post">
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required />
+<div th:replace="~{fragments/header-logout :: header-logout}"></div>
+<div class="container">
+    <div class="login-box">
+      <div class="login-container">
+    <h2>Login</h2>
+    <form action="/login" method="post">
+        <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+        </div>
+        <div class="input-group">
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required />
+        </div>
+        <div class="button-group">
+            <button type="submit">Login</button>
+        </div>
+        <div th:if="${error}">
+            <p class="error" th:text="${error}"></p>
+        </div>
+    </form>
+</div>
     </div>
-    <div>
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required />
-    </div>
-    <div>
-        <button type="submit">Login</button>
-    </div>
-    <div th:if="${error}">
-        <p style="color:red;" th:text="${error}"></p> <!-- Exibe a mensagem de erro -->
-    </div>
-</form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

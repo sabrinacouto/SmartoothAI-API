@@ -2,9 +2,12 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Home</title>
+
 </head>
 <body>
+
 <h1>Bem-vindo à Home</h1>
 
 <div>
@@ -12,7 +15,6 @@
 
     <div th:if="${#lists.isEmpty(planos)}">
         <p th:text="${mensagem}"></p>
-        <!-- Botão para cadastrar plano -->
         <a th:href="@{/planos/cadastro}">
             <button>Cadastrar Plano</button>
         </a>

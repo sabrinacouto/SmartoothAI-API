@@ -66,22 +66,19 @@ public class UsuarioPacienteService {
         usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
 
         usuarioPacienteRepository.save(usuarioPaciente);
-        System.out.println("Usuário salvo no banco!");
     }
 
     @Transactional
     public void updateUsuario(Long id, UsuarioPacienteDTO usuarioPacienteDTO) {
-        // Obtém o usuário atual do banco
+
         UsuarioPaciente usuarioPaciente = usuarioPacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
-        // Verifica se o e-mail foi alterado e se o novo e-mail já existe
+
         if (!usuarioPaciente.getEmail().equals(usuarioPacienteDTO.getEmail()) &&
                 usuarioPacienteRepository.findByEmail(usuarioPacienteDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("Já existe um usuário com este e-mail.");
         }
-
-        // Atualiza os campos, mas somente se o valor tiver sido alterado
         if (usuarioPacienteDTO.getNome() != null && !usuarioPacienteDTO.getNome().equals(usuarioPaciente.getNome())) {
             usuarioPaciente.setNome(usuarioPacienteDTO.getNome());
         }
@@ -128,10 +125,8 @@ public class UsuarioPacienteService {
             usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
         }
 
-        // Salva o usuário com os campos atualizados
         usuarioPacienteRepository.save(usuarioPaciente);
 
-        System.out.println("Usuário atualizado: " + usuarioPaciente);
     }
 
     public boolean checkUsuarioTemPlanos(Long id) {

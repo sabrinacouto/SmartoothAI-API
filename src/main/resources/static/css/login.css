@@ -1,0 +1,88 @@
+/* Definindo o fundo geral da página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc; /* Cor de fundo suave */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.login-box{
+    margin-top: 8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/* Container de login */
+.login-container {
+    background-color: #ffffff;
+    padding: 80px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;  /* Bordas arredondadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+    text-align: center;
+}
+
+/* Estilo do título */
+.login-container h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilo dos grupos de input */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Estilo das labels */
+.input-group label {
+    font-size: 14px;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 93%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+/* Efeito de foco nos campos de input */
+.input-group input:focus {
+    border-color: #007bff;  /* Cor azul para o foco */
+    outline: none;
+}
+
+/* Estilo do botão de login */
+.button-group button {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #e981a5;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Efeito de hover no botão */
+.button-group button:hover {
+    background-color: #ff5690;
+}
+
+/* Estilo da mensagem de erro */
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
