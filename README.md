@@ -21,7 +21,8 @@ Neste repositório encontra-se a API responsável pelo gerenciamento de profissi
 
 ## Diagrama de Classes
 
-![diagramJavaSprint](https://media.discordapp.net/attachments/1297737020248031284/1304642575147208734/new.jpg?ex=67302295&is=672ed115&hm=f7b68a482f4c75a6f8a47be376edb37f8eddeb2e9a3fec112ddcc19dd16e761b&=&format=webp&width=662&height=437)
+![Captura de tela 2025-03-19 231027](https://github.com/user-attachments/assets/3a23b5c3-2b11-4f0e-ae2b-79eaebf75e56)
+
 
 ## 💬 Rodando localmente
 
