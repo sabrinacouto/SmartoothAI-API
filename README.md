@@ -9,19 +9,22 @@ Neste repositório encontra-se a API responsável pelo gerenciamento de profissi
 
 ## 🪐 Developers 
 
-- [Sabrina Couto](https://github.com/sabrinacouto) - Backend Developer
-- [Juliana Mo.](https://github.com/julianamo93) - Modelagem de Dados e Cloud
-- [Kevin Nobre](https://github.com/KevinNobre) - Backend e Front
-
-## Modelo DER
-
-![diagramJavaSprint](https://media.discordapp.net/attachments/1297737020248031284/1304642071910420480/Captura_de_tela_2024-11-09_000136.png?ex=6730221d&is=672ed09d&hm=dc35c7d93a72912c58abb7dd4f6b0348b64291741ff7d666ac6eb07331fd3e05&=&format=webp&quality=lossless&width=1098&height=643)
-
+- [Sabrina Couto](https://github.com/sabrinacouto) - Backend Developer - RM552728 - 2TDSZ
+- [Juliana Mo.](https://github.com/julianamo93) - Modelagem de Dados e Cloud - RM554113 -2TDSPR
+- [Kevin Nobre](https://github.com/KevinNobre) - Backend e Front - RM552590 - 2TDSZ 
 
 
 ## Diagrama de Classes
 
 ![Captura de tela 2025-03-19 231027](https://github.com/user-attachments/assets/3a23b5c3-2b11-4f0e-ae2b-79eaebf75e56)
+
+## Arquitetura da Solução
+
+[Smartooth-Archi.pdf](https://github.com/user-attachments/files/19358853/Smartooth-Archi.pdf)
+
+## Vídeo da Solução
+
+https://youtu.be/2XcoVLipeoc
 
 
 ## 💬 Rodando localmente
@@ -114,16 +117,16 @@ DELETE http://localhost:8080/profissional/{id}
 ## 📌 Endpoints para UsuarioPaciente
 
 ### GET - Retorna um paciente por ID
-GET http://localhost:8080/usuarios/{id}
+GET http://localhost:8080/usuario/{id}
 
 ### POST - Cria um novo Pacinete
-POST http://localhost:8080/usuarios
+POST http://localhost:8080/usuario
 
 ### PUT - Atualiza um Paciente existente
-PUT http://localhost:8080/usuarios/{id} 
+PUT http://localhost:8080/usuario/{id} 
 
 ### DELETE - Deleta um Paciente existente
-DELETE http://localhost:8080/usuarios/{id}
+DELETE http://localhost:8080/usuario/{id}
 
 
 ## 📍 Dependências
