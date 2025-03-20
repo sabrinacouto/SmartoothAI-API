@@ -10,6 +10,7 @@
 <div th:replace="fragments/header :: header(${usuario})"></div>
 
 <div class="container">
+    <div class ="form-box">
 <h1>Editar Plano</h1>
 
 <form th:action="@{/planos/{id}/editar(id=${planoDTO.planoId})}" th:object="${planoDTO}" method="post">
@@ -36,6 +37,7 @@
 
     <button type="submit">Salvar</button>
 </form>
+</div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
