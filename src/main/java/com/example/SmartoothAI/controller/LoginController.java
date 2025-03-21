@@ -30,7 +30,7 @@ public class LoginController {
 
         if (usuario != null) {
             session.setAttribute("usuarioLogadoId", usuario.getPacienteId());
-            System.out.println("✅ Login bem-sucedido! ID do usuário: " + usuario.getPacienteId());
+            System.out.println("Login bem-sucedido! ID do usuário: " + usuario.getPacienteId());
             return "redirect:/home";
         } else {
             model.addAttribute("error", "Credenciais inválidas");
