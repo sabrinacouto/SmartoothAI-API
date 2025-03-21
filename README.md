@@ -77,14 +77,22 @@ as requisições das rotas com a URL:
 
 | Método  | Endpoint                           | Descrição |
 |---------|------------------------------------|-----------|
-| `GET`   | `/usuario/cadastro`               | Exibe o formulário de cadastro de um novo usuário. |
 | `POST`  | `/usuario/cadastro`               | Processa o cadastro de um novo usuário. |
-| `GET`   | `/usuario/editarUsuario/{id}`     | Exibe o formulário de edição do usuário. |
+| `GET`   | `/usuario/editarUsuario/{id}`     | Exibe os dados do formulário de edição do usuário. |
 | `PATCH` | `/usuario/editarUsuario/{id}`     | Atualiza os dados do usuário. |
 | `DELETE`| `/usuario/deletarUsuario/{id}`    | Exclui um usuário do sistema. |
 | `GET`   | `/usuario/logout`                 | Encerra a sessão do usuário logado. |
 
 
+## 📌 Endpoints para o Plano
+
+
+| Método  | Endpoint                | Descrição |
+|---------|-------------------------|-----------|
+| `POST`  | `/planos/cadastro`      | Processa o cadastro de um novo plano. |
+| `GET`   | `/planos/{id}/editar`   | Exibe o formulário de edição do plano. |
+| `PUT`   | `/planos/{id}/editar`   | Atualiza os dados de um plano. |
+| `DELETE`| `/planos/{id}/excluir`  | Exclui um plano do sistema. |
 
 
 
