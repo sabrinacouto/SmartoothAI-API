@@ -21,7 +21,6 @@ public class HomeController {
     private final UsuarioPacienteService usuarioPacienteService;
     private final PlanoService planoService;
 
-    // 🔹 Obtém o ID do usuário logado
     private Long getUsuarioLogadoId(HttpSession session) {
         Object usuarioId = session.getAttribute("usuarioLogadoId");
         if (usuarioId instanceof Long) {
@@ -30,30 +29,27 @@ public class HomeController {
         return null;
     }
 
-    // 🔹 Página inicial com botões de login e cadastro
     @GetMapping("/")
     public String showHomePage() {
-        return "index";  // Redireciona para a tela inicial
+        return "index";
     }
 
-    // 🔹 Página Home do usuário
     @GetMapping("/home")
     public String showUserHome(HttpSession session, Model model) {
         Long usuarioId = getUsuarioLogadoId(session);
 
         if (usuarioId != null) {
-            // Se o usuário estiver logado, obtemos os dados dele
+
             UsuarioPacienteDTO usuario = usuarioPacienteService.getUsuarioPacienteById(usuarioId);
             model.addAttribute("usuario", usuario);
 
-            // Obter planos cadastrados para o usuário
             List<PlanoDTO> planos = planoService.getPlanosByUsuarioId(usuarioId);
             model.addAttribute("planos", planos);
             model.addAttribute("mensagem", planos.isEmpty() ? "Não há plano cadastrado." : "");
         } else {
-            // Se o usuário não estiver logado, exibe uma mensagem de erro
+
             model.addAttribute("erro", "Usuário não logado.");
-            model.addAttribute("planos", List.of());  // Passando uma lista vazia de planos
+            model.addAttribute("planos", List.of());
         }
 
         return "auth/home"; // Página de home

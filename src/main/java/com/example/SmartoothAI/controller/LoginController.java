@@ -17,13 +17,13 @@ public class LoginController {
 
     private final UsuarioPacienteService usuarioPacienteService;
 
-    // 🔹 Exibe formulário de login
+
     @GetMapping("/login")
     public String showLoginForm() {
         return "auth/login";
     }
 
-    // 🔹 Processa login e armazena ID na sessão
+
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String senha, Model model, HttpSession session) {
         UsuarioPacienteDTO usuario = usuarioPacienteService.authenticateUser(email, senha);
@@ -39,7 +39,6 @@ public class LoginController {
     }
 
 
-    // 🔹 Logout: Remove a sessão do usuário
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // Invalida a sessão

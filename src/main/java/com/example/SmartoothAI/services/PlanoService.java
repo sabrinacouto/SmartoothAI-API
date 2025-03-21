@@ -95,10 +95,9 @@ public class PlanoService {
 
 
     public List<PlanoDTO> getPlanosByUsuarioId(Long usuarioId) {
-        // Verifique se o método findByUsuarioPacienteID está correto no repositório
+
         List<Plano> planos = planoRepository. findByUsuarioPaciente_PacienteId(usuarioId);
 
-        // Convertendo a lista de planos em DTOs
         return planos.stream().map(plano -> {
             PlanoDTO planoDTO = new PlanoDTO();
             planoDTO.setPlanoId(plano.getPlanoId());
