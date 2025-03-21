@@ -95,6 +95,10 @@ as requisições das rotas com a URL:
 | `DELETE`| `/planos/{id}/excluir`  | Exclui um plano do sistema. |
 
 
+## 👩‍💻 Exemplo de teste
+ 
+![CadastroLoginJava](https://github.com/user-attachments/assets/3a49ad66-68d5-4904-8a0c-b4ef54c418b1)
+
 
 ## 📍 Dependências
 ```gradle
