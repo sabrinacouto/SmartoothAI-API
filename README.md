@@ -30,9 +30,6 @@ Neste repositório encontra-se a API responsável pelo gerenciamento de profissi
 
 https://youtu.be/2XcoVLipeoc
 
-## Script SQL do banco
-
-[Uploading script_sql_smartooth_atualizado.ddl…]()
 
 ## 💬 Rodando localmente
 
