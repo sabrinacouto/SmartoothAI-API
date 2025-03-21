@@ -73,69 +73,19 @@ as requisições das rotas com a URL:
 ```endpoint
    http://localhost:8080/
 ```
-## 📌 Endpoints para RecomendacaoTrat
+## 📌 Endpoints para o UsuarioPaciente
 
-### GET - Retorna todas as recomendações
-GET http://localhost:8080/recomendacoes
-
-### GET - Retorna uma recomendação por ID
-GET http://localhost:8080/recomendacoes/{id}
-
-### POST - Cria uma nova recomendação
-POST http://localhost:8080/recomendacoes 
-
-### PUT - Edita uma recomendação existente
-PUT http://localhost:8080/recomendacoes/{id} 
-
-### DELETE - Deleta uma recomendação existente
-DELETE http://localhost:8080/recomendacoes/{id}
-
-## 📌 Endpoints para a entidade Plano
-
-### GET - Retorna todos os planos
-GET http://localhost:8080/planos
-
-### GET - Retorna um plano por ID
-GET http://localhost:8080/planos/{id}
-
-### POST - Cria um novo plano
-POST http://localhost:8080/planos 
-
-### PUT - Atualiza um plano existente
-PUT http://localhost:8080/planos/{id} 
-
-### DELETE - Deleta um plano existente
-DELETE http://localhost:8080/planos/{id}
+| Método  | Endpoint                           | Descrição |
+|---------|------------------------------------|-----------|
+| `GET`   | `/usuario/cadastro`               | Exibe o formulário de cadastro de um novo usuário. |
+| `POST`  | `/usuario/cadastro`               | Processa o cadastro de um novo usuário. |
+| `GET`   | `/usuario/editarUsuario/{id}`     | Exibe o formulário de edição do usuário. |
+| `PATCH` | `/usuario/editarUsuario/{id}`     | Atualiza os dados do usuário. |
+| `DELETE`| `/usuario/deletarUsuario/{id}`    | Exclui um usuário do sistema. |
+| `GET`   | `/usuario/logout`                 | Encerra a sessão do usuário logado. |
 
 
-## 📌 Endpoints para Profissional
 
-### GET - Retorna um profissional por ID
-GET http://localhost:8080/profissional/{id}
-
-### POST - Cria um novo profissional
-POST http://localhost:8080/profissional
-
-### PUT - Atualiza um profissional existente
-PUT http://localhost:8080/profissional/{id} 
-
-### DELETE - Deleta um profissional existente
-DELETE http://localhost:8080/profissional/{id}
-
-
-## 📌 Endpoints para UsuarioPaciente
-
-### GET - Retorna um paciente por ID
-GET http://localhost:8080/usuario/{id}
-
-### POST - Cria um novo Pacinete
-POST http://localhost:8080/usuario
-
-### PUT - Atualiza um Paciente existente
-PUT http://localhost:8080/usuario/{id} 
-
-### DELETE - Deleta um Paciente existente
-DELETE http://localhost:8080/usuario/{id}
 
 
 ## 📍 Dependências
