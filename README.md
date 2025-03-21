@@ -30,6 +30,9 @@ Neste repositório encontra-se a API responsável pelo gerenciamento de profissi
 
 https://youtu.be/2XcoVLipeoc
 
+## Script SQL do banco
+
+[Uploading script_sql_smartooth_atualizado.ddl…]()
 
 ## 💬 Rodando localmente
 
@@ -152,7 +155,6 @@ dependencies {
 <br> <div align="center"> 
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" width="70" height="70">
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original-wordmark.svg" width="70" height="70"/> 
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" width="70" height="70" /> 
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gradle/gradle-plain-wordmark.svg" width="70" height="70" />
 <br> 
 </div> 
