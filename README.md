@@ -31,10 +31,6 @@ Neste repositório encontra-se a API responsável pelo gerenciamento de profissi
 
 [Smartooth-Archi.pdf](https://github.com/user-attachments/files/19358853/Smartooth-Archi.pdf)
 
-## Vídeo da Solução
-
-https://youtu.be/2XcoVLipeoc
-
 
 ## 💬 Rodando localmente
 
