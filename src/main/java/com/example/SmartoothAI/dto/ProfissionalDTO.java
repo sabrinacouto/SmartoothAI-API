@@ -15,4 +15,5 @@ public class ProfissionalDTO {
     private String especialidade;
     private String experiencia;
     private String contato;
+    private String senha;
 }

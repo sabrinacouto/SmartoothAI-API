@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title th:text="#{choose.user.title}">Escolha o tipo de usuário</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            padding: 10px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header-logout :: header-logout}"></div>
+
+<h1 th:text="#{choose.user.prompt}">Você é</h1>
+
+<div class="buttons">
+    <form th:action="@{/usuario/cadastro}" method="get">
+        <button type="submit" th:text="#{choose.user.patient}">Paciente</button>
+    </form>
+    <form th:action="@{/profissional/cadastro}" method="get">
+        <button type="submit" th:text="#{choose.user.professional}">Profissional</button>
+    </form>
+</div>
+
+</body>
+</html>

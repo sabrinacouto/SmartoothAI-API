@@ -9,11 +9,10 @@
                 <img th:src="@{/assets/logo.png}" alt="Smartooth Logo" />
             </div>
 
-
             <nav class="nav-menu">
                 <ul>
-                    <li><a th:href="@{/home}">Home</a></li>
-                    <li><a th:href="@{/usuario/logout}">Sair</a></li>
+                    <li><a th:href="@{/home}" th:text="#{menu.home}">Home</a></li>
+                    <li><a th:href="@{/usuario/logout}" th:text="#{menu.logout}">Sair</a></li>
                 </ul>
             </nav>
         </div>

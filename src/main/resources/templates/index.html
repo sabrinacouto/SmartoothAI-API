@@ -15,14 +15,16 @@
                     <img th:src="@{/assets/mascote.png}" alt="Mascote da Smartooth">
                 </div>
                 <div class="about">
-                <h1 class="title">
-                    Simplifique o cuidado odontológico com inteligência artificial
-                </h1>
-                <p>
-                    Nosso software utiliza IA para otimizar diagnósticos, agilizar processos e facilitar a rotina dos profissionais de saúde bucal, permitindo um atendimento mais preciso, eficiente e acessível.
-                </p>
+                    <h1 class="title" th:text="#{home.secao1.titulo}">
+                        Simplifique o cuidado odontológico com inteligência artificial
+                    </h1>
+                    <p th:text="#{home.secao1.paragrafo}">
+                        Nosso software utiliza IA para otimizar diagnósticos...
+                    </p>
                     <a th:href="@{/usuario/cadastro}">
-                        <button class="botao">Clique aqui para saber mais</button>
+                        <button class="botao" th:text="#{home.secao1.botao}">
+                            Clique aqui para saber mais
+                        </button>
                     </a>
                 </div>
             </div>
@@ -33,11 +35,11 @@
         <div class="odonto-care">
             <div class="text-black">
                 <div class="about-section-odonto">
-                    <h1 class="title-black">
+                    <h1 class="title-black" th:text="#{home.secao2.titulo}">
                         Dicas, Descontos e Cuidados Sob Medida para Você
                     </h1>
-                    <p>
-                        Com o SmarTooth AI, cada consulta é uma oportunidade para melhorar a saúde bucal. A plataforma utiliza o histórico de consultas e prontuários para fornecer recomendações personalizadas e monitorar seus hábitos, premiando quem cuida da saúde com pontos que podem ser trocados por descontos em tratamentos dentários. Nossa missão é melhorar o cuidado odontológico de todos, oferecendo soluções inovadoras que reduzem os custos dos planos e incentivam práticas saudáveis e regulares.
+                    <p th:text="#{home.secao2.paragrafo}">
+                        Com o SmarTooth AI, cada consulta é uma oportunidade...
                     </p>
                 </div>
                 <div class="image-section-odonto">
@@ -47,16 +49,15 @@
         </div>
     </section>
 
-
     <section class="section-about">
         <div class="home-section">
             <div class="text-center">
                 <div class="about">
-                    <h1 class="title">
+                    <h1 class="title" th:text="#{home.secao3.titulo}">
                         Tecnologia e Benefícios que Valorizam Seu Sorriso
                     </h1>
-                    <p>
-                        Com o SmarTooth AI, cada visita ao dentista se torna mais eficiente e econômica. Nossa plataforma usa dados em tempo real para oferecer recomendações personalizadas, incentivando hábitos de saúde bucal que podem ser trocados por pontos e descontos. O SmarTooth AI vai além do tratamento, reduzindo custos com planos odontológicos e melhorando sua qualidade de vida, com um sorriso mais saudável e bem cuidado.
+                    <p th:text="#{home.secao3.paragrafo}">
+                        Com o SmarTooth AI, cada visita ao dentista se torna...
                     </p>
                 </div>
             </div>
@@ -65,6 +66,5 @@
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-
 </body>
 </html>

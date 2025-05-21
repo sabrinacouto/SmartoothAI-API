@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/footer.css">
-    <title>Footer</title>
+    <title th:text="#{footer.title}">Footer</title>
 </head>
 <body>
 
@@ -15,31 +15,31 @@
             </div>
 
             <div class="box2">
-                <h3>Nos encontramos nas redes:</h3>
+                <h3 th:text="#{footer.social.title}">Nos encontramos nas redes:</h3>
                 <div class="icons">
                     <ul>
                         <li>
                             <a href="https://www.facebook.com/fiap/">
-                                <img th:src="@{/assets/facebook.png}" alt="logo facebook">
+                                <img th:src="@{/assets/facebook.png}" alt="Facebook logo">
                             </a>
                         </li>
                         <li>
                             <a href="https://www.instagram.com/fiapoficial/">
-                                <img th:src="@{/assets/instagram.png}" alt="logo instagram">
+                                <img th:src="@{/assets/instagram.png}" alt="Instagram logo">
                             </a>
                         </li>
                         <li>
                             <a href="https://twitter.com/fiap">
-                                <img th:src="@{/assets/twitter.png}" alt="logo x-twitter">
+                                <img th:src="@{/assets/twitter.png}" alt="Twitter logo">
                             </a>
                         </li>
                     </ul>
                 </div>
-                <p>Copyright &copy; 2025</p>
+                <p>&copy; 2025 Smartooth AI</p>
             </div>
 
             <div class="box3">
-                <h3>Equipe</h3>
+                <h3 th:text="#{footer.team}">Equipe</h3>
                 <ul>
                     <li>Juliana Mo.</li>
                     <li>Kevin Nobre</li>

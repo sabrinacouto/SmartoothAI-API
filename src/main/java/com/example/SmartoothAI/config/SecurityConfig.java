@@ -23,7 +23,19 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/webjars/**", "/favicon.ico").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/login",
+                                "/logout",
+                                "/escolha-usuario",
+                                "/usuario/cadastro",
+                                "/profissional/cadastro",
+                                "/css/**",
+                                "/js/**",
+                                "/assets/**",
+                                "/webjars/**",
+                                "/favicon.ico"
+                        ).permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/usuario/**").hasRole("USUARIO")
                         .requestMatchers("/profissional/**").hasRole("PROFISSIONAL")

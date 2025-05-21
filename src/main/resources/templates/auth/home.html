@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns:th="http://www.w3.org/1999/xhtml">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/home.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <title>Home</title>
+    <title th:text="#{home.titulo}">Home</title>
 </head>
 <body>
 <!-- Importando o fragmento de Header -->
@@ -14,49 +14,48 @@
 <div class="container">
 
     <div class="section-about-toother">
-    <h1 class="greeting">Oi, <span th:text="${usuario.nome}">Usuário</span></h1>
+        <h1 class="greeting" th:text="#{home.ola} + ', ' + ${usuario.nome}">Oi, Usuário</h1>
 
-    <div class="message-box">
-        <h2 class="message-title">Estamos muito felizes!</h2>
-        <p class="message-text">
-            Graças a pessoas como você, conseguimos reduzir em 50% a taxa de doenças bucais.
+        <div class="message-box">
+            <h2 class="message-title" th:text="#{home.felicidade}">Estamos muito felizes!</h2>
+            <p class="message-text" th:text="#{home.mensagemReducao}">
+                Graças a pessoas como você, conseguimos reduzir em 50% a taxa de doenças bucais.
+            </p>
+        </div>
+
+        <a th:href="@{/usuario/editarUsuario/{id}(id=${usuario.pacienteId})}" class="button">
+            <span class="button-text" th:text="#{home.editarPerfil}">Editar Perfil</span>
+        </a>
+
+        <p class="success-text" th:text="#{home.sucessoToother} + ' '">
+            Você é um(a) <span class="highlight" th:text="#{home.toother}">Toother</span> de sucesso
         </p>
     </div>
 
-        <a th:href="@{/usuario/editarUsuario/{id}(id=${usuario.pacienteId})}" class="button">
-            <span class="button-text">Editar Perfil</span>
-        </a>
-
-    <p class="success-text">Você é um(a) <span class="highlight">Toother</span> de sucesso</p>
-
-    </div>
-
     <div class="planos-container">
-        <h2>Planos Cadastrados</h2>
+        <h2 th:text="#{home.planosCadastrados}">Planos Cadastrados</h2>
 
         <div th:if="${#lists.isEmpty(planos)}">
             <p th:text="${mensagem}"></p>
-            <a th:href="@{/planos/cadastro}" class="button">
-                Cadastrar Plano
-            </a>
+            <a th:href="@{/planos/cadastro}" class="button" th:text="#{home.cadastrarPlano}">Cadastrar Plano</a>
         </div>
 
         <div th:each="plano : ${planos}">
             <p>
-                Tipo de Plano: <span th:text="${plano.tipoPlano}"></span><br>
-                Descrição: <span th:text="${plano.descricao}"></span><br>
-                Marca: <span th:text="${plano.marcaPlano}"></span><br>
-                Tipo de Pagamento: <span th:text="${plano.tipoPagamento}"></span><br>
+                <span th:text="#{home.tipoPlano} + ': '"></span><span th:text="${plano.tipoPlano}"></span><br>
+                <span th:text="#{home.descricao} + ': '"></span><span th:text="${plano.descricao}"></span><br>
+                <span th:text="#{home.marca} + ': '"></span><span th:text="${plano.marcaPlano}"></span><br>
+                <span th:text="#{home.tipoPagamento} + ': '"></span><span th:text="${plano.tipoPagamento}"></span><br>
 
             <div class="button-group">
                 <a th:href="@{/planos/{id}/editar(id=${plano.planoId})}" class="btn-edit">
-                    <i class="fas fa-edit"></i> Editar
+                    <i class="fas fa-edit"></i> <span th:text="#{home.editar}">Editar</span>
                 </a>
 
-                <form th:action="@{/planos/{id}/excluir(id=${plano.planoId})}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                <form th:action="@{/planos/{id}/excluir(id=${plano.planoId})}" method="post" onsubmit="return confirm(#{home.confirmarExclusao});">
                     <input type="hidden" name="_method" value="delete" />
                     <button type="submit" class="btn-delete">
-                        <i class="fas fa-trash-alt"></i> Excluir
+                        <i class="fas fa-trash-alt"></i> <span th:text="#{home.excluir}">Excluir</span>
                     </button>
                 </form>
             </div>
@@ -64,7 +63,6 @@
         </div>
     </div>
 </div>
-
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

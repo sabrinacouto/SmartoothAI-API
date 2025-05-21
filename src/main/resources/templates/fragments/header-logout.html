@@ -2,25 +2,26 @@
 <html lang="pt" xmlns:th="http://www.w3.org/1999/xhtml">
 <body>
 
-
 <div th:fragment="header-logout">
     <header class="header-logout">
         <div class="title-header">
-                    <h1>Smartooth AI</h1>
+            <h1 th:text="#{header.titulo}">Smartooth AI</h1>
+        </div>
+
+        <div class="language-selector">
+            <a href="?lang=pt">Português</a> | <a href="?lang=en">English</a>
         </div>
 
         <div class="left-buttons">
             <a th:href="@{/login}">
-                <button class="btn">Login</button>
+                <button class="btn" th:text="#{header.login}">Login</button>
             </a>
-            <a th:href="@{/usuario/cadastro}">
-                <button class="btn">Cadastro</button>
+
+            <a th:href="@{/escolha-usuario}">
+                <button class="btn" th:text="#{header.cadastro}">Cadastro</button>
             </a>
         </div>
     </header>
-</div>
-
-
 </div>
 
 </body>

@@ -3,110 +3,109 @@
 <head>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/form-register.css">
-    <title>Cadastro</title>
+    <title th:text="#{usuario.cadastro.titulo}">Cadastro</title>
     <meta charset="UTF-8">
 </head>
 <body>
 <div th:replace="~{fragments/header-logout :: header-logout}"></div>
 <div class="container">
-<div class ="form-box">
-<div class="form-container">
+    <div class="form-box">
+        <div class="form-container">
 
-    <h2>Cadastro</h2>
+            <h2 th:text="#{usuario.cadastro.titulo}">Cadastro</h2>
 
-    <form th:action="@{/usuario/cadastro}" method="post" th:object="${usuario}">
-        <div th:if="${error}" class="alert-danger">
-            <p th:text="${error}"></p>
+            <form th:action="@{/usuario/cadastro}" method="post" th:object="${usuario}">
+                <div th:if="${error}" class="alert-danger">
+                    <p th:text="${error}"></p>
+                </div>
+
+                <div th:if="${success}" class="alert-success">
+                    <p th:text="#{usuario.cadastro.sucesso}">Usuário cadastrado com sucesso!</p>
+                </div>
+
+                <input type="hidden" th:field="*{pacienteId}">
+
+                <div class="input-group">
+                    <label th:text="#{usuario.nome}">Nome:</label>
+                    <input type="text" th:field="*{nome}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.sobrenome}">Sobrenome:</label>
+                    <input type="text" th:field="*{sobrenome}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.email}">Email:</label>
+                    <input type="email" th:field="*{email}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.dataNascimento}">Data de Nascimento:</label>
+                    <input type="date" th:field="*{dataNasc}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.genero}">Gênero:</label>
+                    <select th:field="*{genero}">
+                        <option value="M" th:text="#{usuario.genero.masculino}">Masculino</option>
+                        <option value="F" th:text="#{usuario.genero.feminino}">Feminino</option>
+                        <option value="O" th:text="#{usuario.genero.outro}">Outro</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.cep}">CEP:</label>
+                    <input type="text" th:field="*{cep}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.logradouro}">Logradouro:</label>
+                    <input type="text" th:field="*{logradouro}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.numero}">Número:</label>
+                    <input type="text" th:field="*{numero}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.complemento}">Complemento:</label>
+                    <input type="text" th:field="*{complemento}">
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.bairro}">Bairro:</label>
+                    <input type="text" th:field="*{bairro}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.cidade}">Cidade:</label>
+                    <input type="text" th:field="*{cidade}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.uf}">UF:</label>
+                    <input type="text" th:field="*{uf}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.contato}">Contato:</label>
+                    <input type="text" th:field="*{contato}" required>
+                </div>
+
+                <div class="input-group">
+                    <label th:text="#{usuario.senha}">Senha:</label>
+                    <input type="password" th:field="*{senha}" required>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" th:text="#{usuario.botao.cadastrar}">Cadastrar</button>
+                </div>
+            </form>
         </div>
-
-        <div th:if="${success}" class="alert-success">
-            <p th:text="${success}">Usuário cadastrado com sucesso! Você já pode realizar o login.</p>
-        </div>
-
-        <input type="hidden" th:field="*{pacienteId}">
-
-        <div class="input-group">
-            <label>Nome:</label>
-            <input type="text" th:field="*{nome}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Sobrenome:</label>
-            <input type="text" th:field="*{sobrenome}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Email:</label>
-            <input type="email" th:field="*{email}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Data de Nascimento:</label>
-            <input type="date" th:field="*{dataNasc}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Gênero:</label>
-            <select th:field="*{genero}">
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-                <option value="O">Outro</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>CEP:</label>
-            <input type="text" th:field="*{cep}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Logradouro:</label>
-            <input type="text" th:field="*{logradouro}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Número:</label>
-            <input type="text" th:field="*{numero}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Complemento:</label>
-            <input type="text" th:field="*{complemento}">
-        </div>
-
-        <div class="input-group">
-            <label>Bairro:</label>
-            <input type="text" th:field="*{bairro}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Cidade:</label>
-            <input type="text" th:field="*{cidade}" required>
-        </div>
-
-        <div class="input-group">
-            <label>UF:</label>
-            <input type="text" th:field="*{uf}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Contato:</label>
-            <input type="text" th:field="*{contato}" required>
-        </div>
-
-        <div class="input-group">
-            <label>Senha:</label>
-            <input type="password" th:field="*{senha}" required>
-        </div>
-
-        <div class="button-group">
-            <button type="submit">Cadastrar</button>
-        </div>
-    </form>
     </div>
 </div>
-</div>
 <div th:replace="~{fragments/footer :: footer}"></div>
-
 </body>
 </html>

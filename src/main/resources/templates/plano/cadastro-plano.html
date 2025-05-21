@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/cadastro-plano.css}">
-    <title>Cadastrar Plano</title>
+    <title th:text="#{plan.register.title}">Cadastrar Plano</title>
 </head>
 <body>
 <div th:replace="fragments/header :: header(${usuario})"></div>
 
 <div class="container">
     <div class="form-box">
-<form th:action="@{/planos/cadastro}" th:object="${planoDTO}" method="post">
-    <h3>Cadastrar Plano</h3>
-    <label>Descrição:</label>
-    <input type="text" th:field="*{descricao}" required>
-    <br>
+        <form th:action="@{/planos/cadastro}" th:object="${planoDTO}" method="post">
+            <h3 th:text="#{plan.register.heading}">Cadastrar Plano</h3>
 
-    <label>Tipo do Plano:</label>
-    <select th:field="*{tipoPlano}" required>
-        <option value="" disabled selected>Selecione o Tipo de Plano</option>
+            <label th:for="descricao" th:text="#{plan.description}">Descrição:</label>
+            <input type="text" th:field="*{descricao}" required>
+            <br>
 
-        <option th:each="tipo : ${tiposPlano}" th:value="${tipo}" th:text="${tipo}"></option>
-    </select>
-    <br>
+            <label th:text="#{plan.type}">Tipo do Plano:</label>
+            <select th:field="*{tipoPlano}" required>
+                <option value="" disabled selected th:text="#{plan.select.type}">Selecione o Tipo de Plano</option>
+                <option th:each="tipo : ${tiposPlano}" th:value="${tipo}" th:text="${tipo}"></option>
+            </select>
+            <br>
 
-    <label>Marca do Plano:</label>
-    <input type="text" th:field="*{marcaPlano}" required>
-    <br>
+            <label th:for="marcaPlano" th:text="#{plan.brand}">Marca do Plano:</label>
+            <input type="text" th:field="*{marcaPlano}" required>
+            <br>
 
-    <label>Tipo de Pagamento:</label>
-    <input type="text" th:field="*{tipoPagamento}" required>
-    <br>
+            <label th:for="tipoPagamento" th:text="#{plan.payment.type}">Tipo de Pagamento:</label>
+            <input type="text" th:field="*{tipoPagamento}" required>
+            <br>
 
-    <button type="submit">Cadastrar</button>
-</form>
+            <button type="submit" th:text="#{button.register}">Cadastrar</button>
+        </form>
     </div>
 </div>
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

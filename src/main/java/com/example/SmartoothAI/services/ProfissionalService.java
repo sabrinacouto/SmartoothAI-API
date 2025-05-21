@@ -16,8 +16,19 @@ public class ProfissionalService {
 
     private final ProfissionalRepository profissionalRepository;
 
+    public ProfissionalDTO authenticateUser(String email, String senha) {
+        Optional<Profissional> profissionalOpt = profissionalRepository.findByEmail(email);
+        if (profissionalOpt.isPresent()) {
+            Profissional profissional = profissionalOpt.get();
+            if (profissional.getSenha().equals(senha)) {
+                return toDTO(profissional);
+            }
+        }
+        return null;
+    }
+
+
     public ProfissionalDTO createProfissional(ProfissionalDTO profissionalDTO) {
-        // Verifica se email já existe
         if (profissionalRepository.existsByEmail(profissionalDTO.getEmail())) {
             throw new EmailAlreadyExistsException("Email já cadastrado.");
         }
@@ -66,6 +77,9 @@ public class ProfissionalService {
         profissional.setNome(dto.getNome());
         profissional.setEmail(dto.getEmail());
         profissional.setContato(dto.getContato());
+        profissional.setEspecialidade(dto.getEspecialidade());
+        profissional.setExperiencia(dto.getExperiencia());
+        profissional.setSenha(dto.getSenha());
 
         return profissional;
     }
@@ -76,6 +90,9 @@ public class ProfissionalService {
         dto.setNome(entity.getNome());
         dto.setEmail(entity.getEmail());
         dto.setContato(entity.getContato());
+        dto.setEspecialidade(entity.getEspecialidade());
+        dto.setExperiencia(entity.getExperiencia());
+        dto.setSenha(entity.getSenha());
 
         return dto;
     }
