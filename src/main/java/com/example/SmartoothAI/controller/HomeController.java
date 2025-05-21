@@ -1,8 +1,10 @@
 package com.example.SmartoothAI.controller;
 
 import com.example.SmartoothAI.dto.PlanoDTO;
+import com.example.SmartoothAI.dto.ProfissionalDTO;
 import com.example.SmartoothAI.dto.UsuarioPacienteDTO;
 import com.example.SmartoothAI.services.PlanoService;
+import com.example.SmartoothAI.services.ProfissionalService;
 import com.example.SmartoothAI.services.UsuarioPacienteService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class HomeController {
 
     private final UsuarioPacienteService usuarioPacienteService;
+    private final ProfissionalService profissionalService;
     private final PlanoService planoService;
 
     private Long getUsuarioLogadoId(HttpSession session) {
@@ -52,6 +55,19 @@ public class HomeController {
             model.addAttribute("planos", List.of());
         }
 
-        return "auth/home"; // Página de home
+        return "auth/home";
+    }
+
+    @GetMapping("/home-profissional")
+    public String showHomeProfissional(HttpSession session, Model model) {
+        Long usuarioId = getUsuarioLogadoId(session);
+        if (usuarioId == null) {
+            return "redirect:/login";
+        }
+
+        ProfissionalDTO profissional = profissionalService.getProfissionalById(usuarioId);
+        model.addAttribute("profissional", profissional);
+
+        return "profissional/home-profissional";
     }
 }

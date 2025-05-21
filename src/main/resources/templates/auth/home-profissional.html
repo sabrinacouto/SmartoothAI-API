@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <title>Home Profissional</title>
+</head>
+<body>
+<!-- Importando o fragmento de Header -->
+<div th:replace="fragments/header :: header(${profissional})"></div>
+
+<div class="container">
+
+    <div class="section-about-profissional">
+        <h1 class="greeting">Olá, <span th:text="${profissional.nome}">Profissional</span></h1>
+
+        <div class="info-box">
+            <p><strong>Especialidade:</strong> <span th:text="${profissional.especialidade}">Especialidade</span></p>
+            <p><strong>Experiência:</strong> <span th:text="${profissional.experiencia}">Experiência</span></p>
+            <p><strong>Contato:</strong> <span th:text="${profissional.contato}">Contato</span></p>
+        </div>
+
+        <a th:href="@{/profissional/editar/{id}(id=${profissional.profissionalId})}" class="button">
+            <span class="button-text">Editar Perfil</span>
+        </a>
+
+        <form th:action="@{/profissional/logout}" method="get" style="margin-top: 20px;">
+            <button type="submit" class="button-logout">Logout</button>
+        </form>
+    </div>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

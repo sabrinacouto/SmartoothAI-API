@@ -1,0 +1,104 @@
+/* Container principal */
+.container {
+    background-color: #fff;
+    padding: 25px 30px;
+    margin: 20px auto;
+    max-width: 700px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Seção com as informações do profissional */
+.section-about-profissional {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Saudação */
+.greeting {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Caixa de informações */
+.info-box {
+    background-color: #f9f9f9;
+    padding: 18px 22px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+.info-box p {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+}
+
+.info-box strong {
+    color: #E32A72; /* destaque rosa */
+}
+
+.button {
+    display: inline-block;
+    background-color: #FEC02D;
+    color: #000;
+    font-weight: 700;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    margin-top: 10px;
+    box-shadow: 0 3px 6px rgba(254, 192, 45, 0.5);
+}
+
+.button:hover {
+    background-color: #d8a91f;
+}
+
+.button-text {
+    font-weight: 700;
+}
+
+.button-logout {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 3px 6px rgba(220, 53, 69, 0.5);
+}
+
+.button-logout:hover {
+    background-color: #b02a37;
+}
+
+form {
+    margin-top: 20px;
+    width: fit-content;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px 20px;
+        margin: 15px 10px;
+    }
+
+    .button, .button-logout {
+        width: 100%;
+        padding: 14px 0;
+    }
+
+    .greeting {
+        font-size: 20px;
+    }
+}

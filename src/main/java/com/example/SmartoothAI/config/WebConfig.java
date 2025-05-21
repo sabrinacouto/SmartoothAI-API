@@ -27,7 +27,7 @@ public class WebConfig {
     public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
         FilterRegistrationBean<HiddenHttpMethodFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new HiddenHttpMethodFilter());
-        registrationBean.addUrlPatterns("/editarUsuario/*");  // Adapte para sua URL
+        registrationBean.addUrlPatterns("/editarUsuario/*");
         return registrationBean;
     }
 

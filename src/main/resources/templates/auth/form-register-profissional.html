@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/form-register.css">
+    <title>Cadastro Profissional</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:replace="~{fragments/header-logout :: header-logout}"></div>
+<div class="container">
+    <div class="form-box">
+        <div class="form-container">
+
+            <h2>Cadastro Profissional</h2>
+
+            <form th:action="@{/profissional/cadastro}" method="post" th:object="${profissional}">
+                <div th:if="${error}" class="alert-danger">
+                    <p th:text="${error}"></p>
+                </div>
+
+                <div th:if="${success}" class="alert-success">
+                    <p th:text="${success}">Profissional cadastrado com sucesso!</p>
+                </div>
+
+                <input type="hidden" th:field="*{profissionalId}">
+
+                <div class="input-group">
+                    <label>Nome:</label>
+                    <input type="text" th:field="*{nome}" maxlength="100" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Email:</label>
+                    <input type="email" th:field="*{email}" maxlength="105" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Senha:</label>
+                    <input type="password" th:field="*{senha}" maxlength="255" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Especialidade:</label>
+                    <input type="text" th:field="*{especialidade}" maxlength="85">
+                </div>
+
+                <div class="input-group">
+                    <label>Experiência:</label>
+                    <textarea th:field="*{experiencia}" maxlength="150" rows="3"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Contato:</label>
+                    <input type="text" th:field="*{contato}" maxlength="45">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit">Cadastrar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
