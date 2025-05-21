@@ -31,10 +31,6 @@ Neste repositório encontra-se a API responsável pelo gerenciamento de profissi
 
 [Smartooth-Archi.pdf](https://github.com/user-attachments/files/19358853/Smartooth-Archi.pdf)
 
-## Vídeo da Solução
-
-https://youtu.be/2XcoVLipeoc
-
 
 ## 💬 Rodando localmente
 
@@ -94,6 +90,10 @@ as requisições das rotas com a URL:
 | `PUT`   | `/planos/{id}/editar`   | Atualiza os dados de um plano. |
 | `DELETE`| `/planos/{id}/excluir`  | Exclui um plano do sistema. |
 
+
+## 👩‍💻 Exemplo de teste
+ 
+![CadastroLoginJava](https://github.com/user-attachments/assets/3a49ad66-68d5-4904-8a0c-b4ef54c418b1)
 
 
 ## 📍 Dependências
