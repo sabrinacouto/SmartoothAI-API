@@ -29,16 +29,14 @@ public class UsuarioPacienteController {
         return null;
     }
 
-
     @GetMapping("/cadastro")
     public String showCadastroForm(Model model) {
         model.addAttribute("usuario", new UsuarioPacienteDTO());
         return "auth/form-register";
     }
 
-
     @PostMapping("/cadastro")
-    public String cadastrarUsuario(@ModelAttribute("usuario") UsuarioPacienteDTO usuarioPacienteDTO, BindingResult bindingResult, Model model) {
+    public String cadastrarUsuario(@Valid @ModelAttribute("usuario") UsuarioPacienteDTO usuarioPacienteDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "auth/form-register";
         }

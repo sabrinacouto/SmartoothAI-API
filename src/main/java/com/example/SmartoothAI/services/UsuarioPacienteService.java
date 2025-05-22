@@ -8,6 +8,7 @@ import com.example.SmartoothAI.producer.UsuarioPacienteProducer;
 import com.example.SmartoothAI.repository.PlanoRepository;
 import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -21,6 +22,7 @@ public class UsuarioPacienteService {
     private final UsuarioPacienteRepository usuarioPacienteRepository;
     private final PlanoRepository planoRepository;
     private final UsuarioPacienteProducer usuarioPacienteProducer;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     private UsuarioPacienteDTO convertToDTO(UsuarioPaciente usuarioPaciente) {
@@ -40,7 +42,7 @@ public class UsuarioPacienteService {
         dto.setUf(usuarioPaciente.getUf());
         dto.setContato(usuarioPaciente.getContato());
         dto.setDescontos(usuarioPaciente.getDescontos());
-        dto.setSenha(usuarioPaciente.getSenha());
+        usuarioPaciente.setSenha(passwordEncoder.encode(usuarioPaciente.getSenha()));
         return dto;
     }
 
@@ -133,7 +135,7 @@ public class UsuarioPacienteService {
             usuarioPaciente.setDescontos(usuarioPacienteDTO.getDescontos());
         }
         if (usuarioPacienteDTO.getSenha() != null && !usuarioPacienteDTO.getSenha().equals(usuarioPaciente.getSenha())) {
-            usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
+            usuarioPaciente.setSenha(passwordEncoder.encode(usuarioPacienteDTO.getSenha()));
         }
 
         usuarioPacienteRepository.save(usuarioPaciente);
@@ -170,14 +172,14 @@ public class UsuarioPacienteService {
     public UsuarioPacienteDTO authenticateUser(String email, String senha) {
         Optional<UsuarioPaciente> usuario = usuarioPacienteRepository.findByEmail(email);
 
-        if (usuario.isPresent() && usuario.get().getSenha().equals(senha)) {
+        if (usuario.isPresent() && passwordEncoder.matches(senha, usuario.get().getSenha())){
             UsuarioPaciente usuarioPaciente = usuario.get();
             UsuarioPacienteDTO usuarioDTO = new UsuarioPacienteDTO();
             usuarioDTO.setPacienteId(usuarioPaciente.getPacienteId());
             usuarioDTO.setNome(usuarioPaciente.getNome());
             usuarioDTO.setEmail(usuarioPaciente.getEmail());
-            // Adicionar mais campos conforme necessário
-            return usuarioDTO;
+
+                return usuarioDTO;
         }
         return null;
     }
