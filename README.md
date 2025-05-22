@@ -62,13 +62,49 @@ spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
 
 Vá até a classe principal que possui a anotação @SpringBootApplication e clique no botão Run ou Debug no IntelliJ.
 
+Acesse a rota para visualizar no navegador:
 
-Utilize Postman ou Insomnia para realizar
-as requisições das rotas com a URL:
-
-```endpoint
+```endpoint aplicação
    http://localhost:8080/
 ```
+
+### Rodando a Mensageria (RabbitMQ)
+🔧 Pré-requisitos
+Certifique-se de que o RabbitMQ esteja instalado e rodando localmente na porta 5672. Caso não esteja, você pode rodá-lo rapidamente via Docker:
+
+```bash
+docker run -d --hostname rabbitmq-host --name rabbitmq \
+-p 5672:5672 -p 15672:15672 \
+-e RABBITMQ_DEFAULT_USER=guest \
+-e RABBITMQ_DEFAULT_PASS=guest \
+rabbitmq:3-management
+```
+A interface de gerenciamento estará disponível em:
+```endpoint rabbitmq
+   http://localhost:15672/
+```
+
+### Rodando o Spring Boot Actuator
+O Spring Boot Actuator expõe endpoints para monitoramento da aplicação. No projeto Smartooth AI, o Actuator está disponível na porta 8081, separada da aplicação principal.
+
+### 🔁 Configuração no application.properties
+
+```bash
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+smartooth.broker.queue.usuarioPaciente=usuarioPacienteQueue
+smartooth.broker.exchange.usuarioPaciente=usuarioPacienteExchange
+smartooth.broker.routingkey.usuarioPaciente.created=usuarioPaciente.created.routingkey
+
+management.server.port=8081
+management.endpoints.web.exposure.include=health,info,metrics,httptrace,loggers
+management.endpoint.health.show-details=always
+management.endpoint.httptrace.enabled=true
+```
+
 ## 📌 Endpoints para o UsuarioPaciente
 
 | Método  | Endpoint                           | Descrição |
@@ -100,13 +136,26 @@ as requisições das rotas com a URL:
 ```gradle
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation"org.springframework.boot:spring-boot-starter-actuator"
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation 'org.springframework.security:spring-security-crypto'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 }
 ```
 
