@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/home.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <title th:text="#{home.titulo}">Home</title>
+    <title>Home</title>
 </head>
 <body>
 <!-- Importando o fragmento de Header -->
@@ -27,9 +27,6 @@
             <span class="button-text" th:text="#{home.editarPerfil}">Editar Perfil</span>
         </a>
 
-        <p class="success-text" th:text="#{home.sucessoToother} + ' '">
-            Você é um(a) <span class="highlight" th:text="#{home.toother}">Toother</span> de sucesso
-        </p>
     </div>
 
     <div class="planos-container">
@@ -38,6 +35,9 @@
         <div th:if="${#lists.isEmpty(planos)}">
             <p th:text="${mensagem}"></p>
             <a th:href="@{/planos/cadastro}" class="button" th:text="#{home.cadastrarPlano}">Cadastrar Plano</a>
+            <span style="margin-left: 10px;">
+        Não tem plano ainda? <a th:href="@{/recomendar-planos}" style="text-decoration: underline; color: blue;">Clique aqui</a>
+    </span>
         </div>
 
         <div th:each="plano : ${planos}">

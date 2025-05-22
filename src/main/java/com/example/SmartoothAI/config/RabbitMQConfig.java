@@ -13,15 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${smartooth.broker.queue.profissional}")
-    private String profissionalQueue;
-
-    @Value("${smartooth.broker.exchange.profissional}")
-    private String profissionalExchange;
-
-    @Value("${smartooth.broker.routingkey.profissional.created}")
-    private String profissionalRoutingKey;
-
     @Value("${smartooth.broker.queue.usuarioPaciente}")
     private String usuarioPacienteQueue;
 
@@ -31,23 +22,6 @@ public class RabbitMQConfig {
     @Value("${smartooth.broker.routingkey.usuarioPaciente.created}")
     private String usuarioPacienteRoutingKey;
 
-    @Bean
-    public Queue profissionalQueue() {
-        return new Queue(profissionalQueue, true);
-    }
-
-    @Bean
-    public DirectExchange profissionalExchange() {
-        return new DirectExchange(profissionalExchange);
-    }
-
-    @Bean
-    public Binding profissionalBinding() {
-        return BindingBuilder
-                .bind(profissionalQueue())
-                .to(profissionalExchange())
-                .with(profissionalRoutingKey);
-    }
 
     @Bean
     public Queue usuarioPacienteQueue() {
