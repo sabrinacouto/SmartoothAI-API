@@ -2,8 +2,10 @@ package com.example.SmartoothAI.services;
 
 
 import com.example.SmartoothAI.dto.ProfissionalDTO;
+import com.example.SmartoothAI.dto.UsuarioPacienteDTO;
 import com.example.SmartoothAI.exceptions.EmailAlreadyExistsException;
 import com.example.SmartoothAI.model.Profissional;
+import com.example.SmartoothAI.producer.ProfissionalProducer;
 import com.example.SmartoothAI.repository.ProfissionalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class ProfissionalService {
 
     private final ProfissionalRepository profissionalRepository;
+
+    private final ProfissionalProducer profissionalProducer;
 
     public ProfissionalDTO authenticateUser(String email, String senha) {
         Optional<Profissional> profissionalOpt = profissionalRepository.findByEmail(email);
@@ -35,6 +39,8 @@ public class ProfissionalService {
 
         Profissional profissional = toEntity(profissionalDTO);
         profissional = profissionalRepository.save(profissional);
+        ProfissionalDTO dto = toDTO(profissional);
+        profissionalProducer.enviarProfissionalCriado(dto);
         return toDTO(profissional);
     }
 

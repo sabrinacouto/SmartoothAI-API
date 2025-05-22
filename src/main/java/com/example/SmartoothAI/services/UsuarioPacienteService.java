@@ -4,6 +4,7 @@ import com.example.SmartoothAI.dto.UsuarioPacienteDTO;
 import com.example.SmartoothAI.exceptions.EmailAlreadyExistsException;
 import com.example.SmartoothAI.exceptions.ResourceNotFoundException;
 import com.example.SmartoothAI.model.UsuarioPaciente;
+import com.example.SmartoothAI.producer.UsuarioPacienteProducer;
 import com.example.SmartoothAI.repository.PlanoRepository;
 import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class UsuarioPacienteService {
 
     private final UsuarioPacienteRepository usuarioPacienteRepository;
     private final PlanoRepository planoRepository;
+    private final UsuarioPacienteProducer usuarioPacienteProducer;
 
 
     private UsuarioPacienteDTO convertToDTO(UsuarioPaciente usuarioPaciente) {
@@ -69,6 +71,8 @@ public class UsuarioPacienteService {
         usuarioPaciente.setSenha(usuarioPacienteDTO.getSenha());
 
         usuarioPacienteRepository.save(usuarioPaciente);
+        UsuarioPacienteDTO dtoEnviado = convertToDTO(usuarioPaciente);
+        usuarioPacienteProducer.enviarUsuarioPacienteCriado(dtoEnviado);
     }
 
     @Transactional
