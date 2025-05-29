@@ -126,10 +126,6 @@ management.endpoint.httptrace.enabled=true
 | `PUT`   | `/planos/{id}/editar`   | Atualiza os dados de um plano. |
 | `DELETE`| `/planos/{id}/excluir`  | Exclui um plano do sistema. |
 
-## 👩‍💻 Video - Sprint 4
-
-https://youtu.be/zdFnn_N12EE
-
 
 ## 👩‍💻 Exemplo de teste
  
