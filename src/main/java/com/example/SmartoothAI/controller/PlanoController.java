@@ -1,16 +1,21 @@
 package com.example.SmartoothAI.controller;
 
 import com.example.SmartoothAI.dto.PlanoDTO;
+import com.example.SmartoothAI.model.UsuarioPaciente;
+import com.example.SmartoothAI.repository.UsuarioPacienteRepository;
 import com.example.SmartoothAI.services.PlanoService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/planos")
@@ -18,6 +23,7 @@ import java.util.Arrays;
 public class PlanoController {
 
     private final PlanoService planoService;
+    private final UsuarioPacienteRepository usuarioPacienteRepository;
 
     private Long getUsuarioLogadoId(HttpSession session) {
         Object usuarioId = session.getAttribute("usuarioLogadoId");
@@ -27,9 +33,17 @@ public class PlanoController {
         return null;
     }
 
+    private Long getUsuarioLogadoId(UserDetails userDetails) {
+        if (userDetails == null) return null;
+
+        Optional<UsuarioPaciente> usuarioOpt = usuarioPacienteRepository.findByEmail(userDetails.getUsername());
+        return usuarioOpt.map(UsuarioPaciente::getPacienteId).orElse(null);
+    }
+
+
     @GetMapping("/cadastro")
-    public String showCadastroForm(Model model, HttpSession session) {
-        Long usuarioId = getUsuarioLogadoId(session);
+    public String showCadastroForm(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Long usuarioId = getUsuarioLogadoId(userDetails);
         if (usuarioId == null) {
             return "redirect:/login";
         }
@@ -42,9 +56,11 @@ public class PlanoController {
     }
 
 
+
     @PostMapping("/cadastro")
-    public String createPlano(@ModelAttribute("planoDTO") PlanoDTO planoDTO, HttpSession session) {
-        Long usuarioId = getUsuarioLogadoId(session);
+    public String createPlano(@ModelAttribute("planoDTO") PlanoDTO planoDTO,
+                              @AuthenticationPrincipal UserDetails userDetails) {
+        Long usuarioId = getUsuarioLogadoId(userDetails);
         if (usuarioId == null) {
             return "redirect:/login";
         }
@@ -54,6 +70,7 @@ public class PlanoController {
 
         return "redirect:/home";
     }
+
 
 
 
@@ -72,8 +89,10 @@ public class PlanoController {
 
 
     @PutMapping("/{id}/editar")
-    public String updatePlano(@PathVariable Long id, @ModelAttribute("planoDTO") PlanoDTO planoDTO, HttpSession session) {
-        Long usuarioId = getUsuarioLogadoId(session);
+    public String updatePlano(@PathVariable Long id,
+                              @ModelAttribute("planoDTO") PlanoDTO planoDTO,
+                              @AuthenticationPrincipal UserDetails userDetails) {
+        Long usuarioId = getUsuarioLogadoId(userDetails);
         if (usuarioId == null) {
             return "redirect:/login";
         }
@@ -83,6 +102,7 @@ public class PlanoController {
 
         return "redirect:/home";
     }
+
 
     @DeleteMapping("/{id}/excluir")
     public String deletePlano(@PathVariable Long id) {

@@ -12,7 +12,7 @@ public class GroqConfig {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final String apiKey = "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";
+    private final String apiKey = "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";
     private final String baseUrl = "https://api.groq.com/openai/v1/chat/completions";
 
     public String gerarResposta(String userMessage) {

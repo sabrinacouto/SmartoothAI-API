@@ -21,6 +21,7 @@ public class PlanoService {
     private final PlanoRepository planoRepository;
     private final UsuarioPacienteRepository usuarioPacienteRepository;
 
+
     @Transactional
     public void createPlano(PlanoDTO planoDTO) {
         Optional<UsuarioPaciente> usuarioPaciente = usuarioPacienteRepository.findById(planoDTO.getUsuarioPacienteId());
@@ -73,9 +74,11 @@ public class PlanoService {
         }
     }
 
+
+
     @Transactional
     public void deletePlano(Long id) {
-        planoRepository.deleteById(id); // Exclui o plano
+        planoRepository.deleteById(id);
     }
 
 

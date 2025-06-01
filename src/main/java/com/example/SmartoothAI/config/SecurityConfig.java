@@ -15,7 +15,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/usuario/cadastro", "/public/**").permitAll()
-                        .requestMatchers("/home", "/recomendar-planos", "/planos-cadastro", "/editar-usuario")
+                        .requestMatchers("/home", "/recomendar-planos", "/planos-cadastro", "/editar-usuario", "/planos/**")
                         .hasRole("USUARIO")
                         .anyRequest().permitAll()
                 )
